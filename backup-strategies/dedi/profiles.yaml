@@ -14,7 +14,7 @@ mixins:
             AWS_SECRET_ACCESS_KEY: ENC[AES256_GCM,data:+CKHTlgb2ggzasnXDMMNo7dxktFbVnY7S3pPQ/Tn8A==,iv:f59h2JYwaoCfXPPqRtx9tleU3qnL4E7jtlsGv1qsEgk=,tag:tpAarW+REUI0z+Lu/DStkg==,type:str]
     base-profile:
         backup:
-            host: cloud
+            host: dedi
             one-file-system: true
             exclude-caches: true
             exclude-file: excludes.txt
@@ -41,18 +41,73 @@ profiles:
             source:
                 - /home/ben/docker/authentik/backup
             run-before: |
-                pushd /home/ben/docker/authentik
-                mkdir backup
-                pushd backup
-                . ./backup.env
+                mkdir -p /home/ben/docker/authentik/backup
+                pushd /home/ben/docker/authentik/backup
+                . ../backup.env
                 docker exec -t -e=PG{USER,PASSWORD,DATABASE} authentik-postgresql-1 pg_dumpall --clean --if-exists > database.sql
                 mkdir ak_{certs,media,templates}
                 docker cp -a authentik-worker-1:/media/. ./ak_media/.
                 docker cp -a authentik-worker-1:/certs/. ./ak_certs/.
                 docker cp -a authentik-worker-1:/templates/. ./ak_templates/.
             run-after: |
-                pushd /home/ben/docker/authentik
-                rm -rf backup
+                rm -rf /home/ben/docker/authentik/backup
+    discord-status:
+        use:
+            - b2-cloud
+            - base-profile
+        backup:
+            tag:
+                - discord-status
+            schedule: weekly
+            source:
+                - /home/ben/docker/discord-status/backup
+            run-before: |
+                mkdir -p /home/ben/docker/discord-status/backup
+                pushd /home/ben/docker/discord-status/backup
+                . ../.env
+                docker exec -t -e=PG{USER,PASSWORD,DATABASE} discord-status-postgres-1 pg_dumpall --clean --if-exists > database.sql
+            run-after: |
+                rm -rf /home/ben/docker/discord-status/backup
+    ca-zeppelin:
+        use:
+            - b2-cloud
+            - base-profile
+        backup:
+            tag:
+                - ca-zeppelin
+            schedule: daily
+            source:
+                - /home/ben/docker/CA_zeppelin/backup
+            run-before: |
+                mkdir -p /home/ben/docker/CA_zeppelin/backup
+                pushd /home/ben/docker/CA_zeppelin
+                set -o allexport
+                . ./.env
+
+                docker compose -f docker-compose.ben.yml exec -t \
+                  -e MYSQL_PWD=$DOCKER_PROD_MYSQL_ROOT_PASSWORD \
+                  mysql \
+                  mysqldump --all-databases --opt > /home/ben/docker/CA_zeppelin/backup/database.sql
+            run-after: |
+                rm -rf /home/ben/docker/CA_zeppelin/backup
+    mailcow:
+        use:
+            - b2-cloud
+            - base-profile
+        backup:
+            tag:
+                - mailcow
+            schedule: daily
+            source:
+                - /home/ben/docker/mailcow/backup
+            run-before: |
+                mkdir -p /home/ben/docker/mailcow/backup
+                pushd /home/ben/docker/mailcow
+
+                MAILCOW_BACKUP_LOCATION=/home/ben/docker/mailcow/backup \
+                  /home/ben/docker/mailcow/helper-scripts/backup_and_restore.sh backup all --delete-days 1
+            run-after: |
+                rm -rf /home/ben/docker/mailcow/backup
     traefik:
         use:
             - b2-cloud
@@ -74,8 +129,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-01-28T04:03:21Z"
-    mac: ENC[AES256_GCM,data:yswipM9rGtXtHGOrzepoEDpSOykvd3CB0EmLkykxy2g+84uYNr3z57wwvDR6UaVU5OmPvIvAK+2ehS8+JLz3EwW/bG+AdAmvqNRuewiwqyN9OctvNIqCNLDKSKqFRbRLZr5EnoYVJaqVGJgNmlcZoEeDGeYgfSNs+ABRZfpj94E=,iv:dICkRJMTy4WT5VFWcnlludjsTJ1khSoKqzZncNtPwjQ=,tag:qmmN3X9t32f0WTGB3ecImQ==,type:str]
+    lastmodified: "2025-01-28T05:18:46Z"
+    mac: ENC[AES256_GCM,data:XXGQ7etgPZCD4gWYkL48X73Nv6+kRfHSaGvsd/K5fHQn0apeLHHqjeM9NqOkzwnLuqf/8M5OifJMW8V+5E8BNsCd6foSOeFjKd2hON+wlM3f1OJ48EStTOFayWWZkbZw456fcUfpeP6FEDTNg1z9HOI76YM1xmP/f2/PBJ7Ud9g=,iv://HZTWSU7dhYUSzIHyRSK1WiAN5mAO6TWPqozirlCaI=,tag:tPZrIMDm6uKHvd3qh/pZmQ==,type:str]
     pgp:
         - created_at: "2025-01-28T00:39:48Z"
           enc: |-
