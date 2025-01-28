@@ -1,0 +1,97 @@
+# yaml-language-server: $schema=https://creativeprojects.github.io/resticprofile/jsonschema/config.json
+version: "2"
+global:
+    initialize: true
+    scheduler: systemd
+mixins:
+    b2-cloud:
+        base-dir: /etc/resticprofile
+        password-file: password.txt
+        repo: ENC[AES256_GCM,data:unKCkkgOLhQxB0cCPFNow2bFs6w9ns+JyZJNPm9DxXJc+4+aTWg26lcD9VXo,iv:mOPt82fL8+0yBvyuUX0FueLhMBOPdjA5fzWnNLHGtEA=,tag:Z6tkZUvgSK82RvjCRyQ/zg==,type:str]
+        env:
+            RESTIC_COMPRESSION: ENC[AES256_GCM,data:G6d6,iv:2wD5+sZZfWmngeoLyxgeBlkUVXJw1s4DZ3EiNuwYLVk=,tag:Bc/wldb5AFPyRkCH4+Vmkw==,type:str]
+            AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:c7CHl8f5aHoT0Ia9RhsX2rvvXSYC6mDRkQ==,iv:E1xH+ThiP7IpBK/zLrsEsjEDwxPiGh6aELAwRgUFORs=,tag:dl0zwTnCqXUkLP561fM3RA==,type:str]
+            AWS_SECRET_ACCESS_KEY: ENC[AES256_GCM,data:ka/TMCMM3F1cMV2BF4Me63UBbYi40tt3ElWiZcOdvQ==,iv:huQ0gVfTg64XMLiH8kXy5P4KolJuA5jjAHTx/FEjkf0=,tag:JcBAlVYhF9fHfiXB2cHwDQ==,type:str]
+    base-profile:
+        backup:
+            host: vps
+            one-file-system: true
+            exclude-caches: true
+            exclude-file: excludes.txt
+            no-error-on-warning: true
+            schedule-permission: system
+        retention:
+            before-backup: false
+            after-backup: true
+            keep-daily: 7
+            keep-weekly: 4
+            keep-monthly: 6
+            keep-within: 3h
+            prune: false
+            host: true
+profiles:
+    personal-zeppelin:
+        use:
+            - b2-cloud
+            - base-profile
+        backup:
+            tag:
+                - zeppelin
+                - discord-bots
+            schedule: daily
+            source:
+                - /home/ben/discord-bots/Zeppelin/backup
+            run-before: |
+                mkdir -p /home/ben/discord-bots/Zeppelin/backup
+                pushd /home/ben/discord-bots/Zeppelin
+                set -o allexport
+                . ./.env
+
+                docker compose -f docker-compose.ben.yml exec -t \
+                  -e MYSQL_PWD=$DOCKER_PROD_MYSQL_ROOT_PASSWORD \
+                  mysql \
+                  mysqldump --all-databases --opt > /home/ben/discord-bots/Zeppelin/backup/database.sql
+            run-after: |
+                rm -rf /home/ben/discord-bots/Zeppelin/backup
+    fish:
+        use:
+            - b2-cloud
+            - base-profile
+        backup:
+            tag:
+                - fish
+                - discord-bots
+            source:
+                - /home/ben/docker/fish/backup
+            run-before: |
+                mkdir -p /home/ben/docker/fish/backup
+                pushd /home/ben/docker/fish
+                . ./.env
+                docker compose -p fish exec -t
+                  -e=PG{USER,PASSWORD} \
+                  db \
+                  pg_dumpall --clean --if-exists > backup/database.sql
+            run-after: |
+                rm -rf /home/ben/docker/fish/backup
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2025-01-28T15:33:37Z"
+    mac: ENC[AES256_GCM,data:FnZDbTRg+qMdxlB5irSKpbRHIMlksI1K24vdwuQmWv2zw1dWCjVhHVrOsxwBYPOhEyPoPkaZTorFCewMEzOB1aLPHt2ZLpl9xOtnDk2/T8UcMy3QtUugqz3GsRNWjUoUf0QkBAYPs7EJazOE4pEqPm23dsRn1jlLB0nuIs0KHUo=,iv:P1YFBlULs/r7V3OtwdH2eHmgm/c8Yuc4mquhUqHY0/A=,tag:G0h+GccGhPeNALJVidR+kA==,type:str]
+    pgp:
+        - created_at: "2025-01-28T15:16:44Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hF4Dlw80gGBdP4gSAQdA6dtaFy2MQ9/kMpfX5aylBHJwP+W7GbdpQXy1USZ0JC8w
+            fPcQbwiso/eJyDLSc5bjZotOzkBm7Ycpl1rJLE2t+WeFHPqdRsQLj4Ie6g3mUzPN
+            1FsBCQIQYnsJ6QX9G/OwYHWDJjUVVkYG+G0Or7K91gqM12yRgAb7INn8Mrpy4oVa
+            lQEOa+6RRS6TiRrzT8ISXJM2mOqIJygf/9zOsLahQXyHtm1II0TBX6+wM2Mu
+            =3Flx
+            -----END PGP MESSAGE-----
+          fp: 870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
+    encrypted_regex: (env)|(repo)
+    version: 3.9.4
