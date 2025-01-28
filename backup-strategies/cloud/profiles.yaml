@@ -56,19 +56,14 @@ profiles:
                 - traefik-public
             schedule: daily
             source: /etc/traefik
-    prune:
-        use:
-            - b2-cloud
-        prune:
-            schedule: monthly
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-01-28T00:44:21Z"
-    mac: ENC[AES256_GCM,data:S2pkVEVhyLkqrqwwXTFO8nDJ9LuvkjaVDI3guBlSUlhMEVnM77DyImmWxHhRTQy1Cv8OrGegbPLSUOyA8+zlmRzv/a5NVctGduTA4fs8x2qvzw1fCK8Bi91qYGX2fZmYQ6Y6/U+VnAkEZ2ZKRQbZmn44jO4FNNhoH2W+msUiOkM=,iv:kfE//uJ0q3rT3Bu/ZOmAaebcI/tHRqxs8hbIB3bBesE=,tag:/kZWOD9Dk9Aon4FnD/Ha3g==,type:str]
+    lastmodified: "2025-01-28T15:33:55Z"
+    mac: ENC[AES256_GCM,data:UeOpg7IdEWo+sjKYkdJ6xgjO9WF9wi5XmfL48Q7bcjkD3lEOHDElPKjkLNDV00GlEPjDuBX2Xino8169ldOPaMRPe9Ery28QY8XaTMrTQFmS+8ilbrbZrpaVki2XgiZfkWwpnv6qW/4bjHUdF3sqSM7yrlrxnWTQ0Ir3QXAX764=,iv:tjEz5DSzrvlt/ONo+Uo6FYYVGjniJTZHcUI+1didDM0=,tag:7A/Phca/3mzO6A5C9wOv2A==,type:str]
     pgp:
         - created_at: "2025-01-28T00:39:48Z"
           enc: |-

@@ -68,19 +68,14 @@ profiles:
                 - authentik-outpost
             source:
                 - /home/ben/authentik
-    prune:
-        use:
-            - b2-homelab
-        prune:
-            schedule: weekly
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-01-28T05:46:59Z"
-    mac: ENC[AES256_GCM,data:LPAOro4PQNBWGGB7o2LLfc2Vms3UH4ohgPnWt3CipM8jKBBFPIqyez0X04g62tsiOGYLMTdGpdwWbLnMnUyqprAu6w8zm4lPcdRXjYeIYIyQU0sHJqa22a1wvhErLddQ9qvU5W+ACMYcM7lZpXSIXZpURxhYANG4gwvMb0biw/w=,iv:zUvwwVvUTg5LTgqOZfmlUmU3SzV3C235XSI8LUNTje0=,tag:dsxSlxfWWDo/8bIEJed8rQ==,type:str]
+    lastmodified: "2025-01-28T15:34:41Z"
+    mac: ENC[AES256_GCM,data:Ibvt3054eiJajxRTT9sD+Tq7PbCjWvCKoQkawI9qxFXVhx02guFCXbMNkeXJnM7FWyohdmEaRObWLcmGeA8qkIGvFYU65C6jksyZM+Um+lEkeuRZmYs+hBin6RSCAcNKPbW66x6rN1Uw+cGZxxS692GVAHpdJv9gM26iDowyvRw=,iv:ncG+v1ZU/I1NsKISqmhGdwBPHp2sBMF8ZHVhtGYHckg=,tag:MxMz7BsHV2ahrzn4VZumwg==,type:str]
     pgp:
         - created_at: "2025-01-28T05:29:55Z"
           enc: |-
