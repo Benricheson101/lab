@@ -58,6 +58,7 @@ profiles:
             - b2-cloud
             - base-profile
         backup:
+            schedule: daily
             tag:
                 - fish
                 - discord-bots
@@ -67,7 +68,7 @@ profiles:
                 mkdir -p /home/ben/docker/fish/backup
                 pushd /home/ben/docker/fish
                 . ./.env
-                docker compose -p fish exec -t
+                docker compose -p fish exec -t \
                   -e=PG{USER,PASSWORD} \
                   db \
                   pg_dumpall --clean --if-exists > backup/database.sql
@@ -79,8 +80,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-01-28T15:33:37Z"
-    mac: ENC[AES256_GCM,data:FnZDbTRg+qMdxlB5irSKpbRHIMlksI1K24vdwuQmWv2zw1dWCjVhHVrOsxwBYPOhEyPoPkaZTorFCewMEzOB1aLPHt2ZLpl9xOtnDk2/T8UcMy3QtUugqz3GsRNWjUoUf0QkBAYPs7EJazOE4pEqPm23dsRn1jlLB0nuIs0KHUo=,iv:P1YFBlULs/r7V3OtwdH2eHmgm/c8Yuc4mquhUqHY0/A=,tag:G0h+GccGhPeNALJVidR+kA==,type:str]
+    lastmodified: "2025-01-28T15:41:10Z"
+    mac: ENC[AES256_GCM,data:LKkD3VVKRXtJm0Pg7gk/dszLvmH48xnlR4mTtsDnsCT9BPYxgfVBt9c2A28KSPgcWltlApNeD6qfcnIE6LdIamq2xWxNfZqof/j0nvVMBbHDEXIHF7bCWNtg1xbjq+Z0wGmEnMu7j29lOjnNCrCDaXkcjPYmv5I8QHjztJYrIZ0=,iv:P9t1dgIq73/IPlAXg9QybGpLRENT0ovegzEpLelIenA=,tag:TFJ1MZFj3sSvpChtx1LqeA==,type:str]
     pgp:
         - created_at: "2025-01-28T15:16:44Z"
           enc: |-

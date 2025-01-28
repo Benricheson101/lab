@@ -58,6 +58,7 @@ profiles:
         backup:
             tag:
                 - discord-status
+                - discord-bots
             schedule: weekly
             source:
                 - /home/ben/docker/discord-status/backup
@@ -74,7 +75,8 @@ profiles:
             - base-profile
         backup:
             tag:
-                - ca-zeppelin
+                - zeppelin
+                - discord-bots
             schedule: daily
             source:
                 - /home/ben/docker/CA_zeppelin/backup
@@ -114,7 +116,7 @@ profiles:
             - base-profile
         backup:
             tag:
-                - traefik-dedi
+                - traefik
             schedule: monthly
             source:
                 - /home/ben/docker/traefik
@@ -129,8 +131,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-01-28T05:18:46Z"
-    mac: ENC[AES256_GCM,data:XXGQ7etgPZCD4gWYkL48X73Nv6+kRfHSaGvsd/K5fHQn0apeLHHqjeM9NqOkzwnLuqf/8M5OifJMW8V+5E8BNsCd6foSOeFjKd2hON+wlM3f1OJ48EStTOFayWWZkbZw456fcUfpeP6FEDTNg1z9HOI76YM1xmP/f2/PBJ7Ud9g=,iv://HZTWSU7dhYUSzIHyRSK1WiAN5mAO6TWPqozirlCaI=,tag:tPZrIMDm6uKHvd3qh/pZmQ==,type:str]
+    lastmodified: "2025-01-28T15:49:04Z"
+    mac: ENC[AES256_GCM,data:fW9be6jCAAqE/gR1oxShGcHWHGGx+BRF7kDnP24hSDXtN/tR9oDWQs2khQzIrBTTsOAzCOPUxT95+2IdWQbtPNKkIgxH0TxNqN5Q8LLCIjVZOUTVdFZfrAfLOhKnl6zFB3qxR1EVyaq00fCWsIHVJng8v8z65B3zBw7ib0a22Tw=,iv:PJR//nkK88sG0TUakCx9fi3Wbp9HNzfQVCVidvypn6s=,tag:+j8yJeFrOsaiXNPRNq/90Q==,type:str]
     pgp:
         - created_at: "2025-01-28T00:39:48Z"
           enc: |-
