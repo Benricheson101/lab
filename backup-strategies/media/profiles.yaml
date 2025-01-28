@@ -1,0 +1,100 @@
+# yaml-language-server: $schema=https://creativeprojects.github.io/resticprofile/jsonschema/config.json
+version: "2"
+global:
+    initialize: true
+    scheduler: systemd
+mixins:
+    b2-homelab:
+        base-dir: /etc/resticprofile
+        repo: ENC[AES256_GCM,data:LUoTVcBGbrMyHnDTt42+fhrHd8r5zBl1WGcBwtFx8c7BaTlR1h/O6fAHk21CSiYRgVR/ivNaUA==,iv:KJYrIqI+8palSG/bSlCHpGUm86pUk+uT0QKIPvfAESw=,tag:SEUfEIIuIZmalaUvqbLokw==,type:str]
+        password-file: password.txt
+        env:
+            RESTIC_COMPRESSION: ENC[AES256_GCM,data:ZAsl,iv:l3IrdPgqOFMIW5Mv+IEuwJbZ+AQzRK7h6NfdicYtf0o=,tag:+6E/J5k4AsbW/l31GfADQQ==,type:str]
+            AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:xQUZk12cXxguNW4OzDukgXjxs3GyrPZVXg==,iv:6lFT22s9acET4dXta27lKoNrEnbGNzhBMhcBMJ6kpgQ=,tag:6zo2/SOERHqD3pBDZLBNTg==,type:str]
+            AWS_SECRET_ACCESS_KEY: ENC[AES256_GCM,data:oWoE78shH+voaDX9/yJ28mcKdjW1khfP1WjVzUBASQ==,iv:ZUqA/A9wpdS4BnW8OPqqpyDMO0t8ngnUVnwRqygIMSM=,tag:H2/E1k86p7/9A6/r9J5YUQ==,type:str]
+    base-profile:
+        backup:
+            one-file-system: true
+            exclude-caches: true
+            exclude-file: excludes.txt
+            no-error-on-warning: true
+            schedule-permission: system
+        retention:
+            before-backup: false
+            after-backup: true
+            keep-daily: 7
+            keep-weekly: 4
+            keep-monthly: 6
+            keep-within: 3h
+            prune: false
+            host: true
+profiles:
+    media:
+        use:
+            - b2-homelab
+            - base-profile
+        backup:
+            tag:
+                - media
+            # run daily at 4am
+            schedule: "4:00"
+            source:
+                - /home/ben/docker/media
+            run-before: |
+                docker compose -p media down
+            run-after: |
+                docker compose --project-directory /home/ben/docker/media up -d
+    immich:
+        use:
+            - b2-homelab
+            - base-profile
+        backup:
+            tag:
+                - immich
+            schedule: weekly
+            one-file-system: false
+            source:
+                - /home/ben/docker/immich
+                # IMPORTANT: this only backs up immich postgres, not the actual image data. that must be done separately
+            run-before: |
+                set -o allexport
+
+                . /home/ben/docker/immich/.env
+
+                docker compose -p immich exec \
+                  -e PGUSER=$DB_USERNAME \
+                  -e PGPASSWORD=$DB_PASSWORD \
+                  -e PGDATABASE=$DB_DATABASE_NAME \
+                  database \
+                  pg_dumpall --clean --if-exists \
+                  > /home/ben/docker/immich/database.sql
+            run-after: |
+                rm -f /home/ben/docker/immich/database.sql
+    prune:
+        use:
+            - b2-homelab
+        prune:
+            schedule: weekly
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2025-01-28T01:06:57Z"
+    mac: ENC[AES256_GCM,data:qP6PZ+PHTYTP/5rxcjtzgHUgMBcdrM0i4NlML8BUY5FkjxraAfVUnchKJaPW22AN0ELfMIVb3wC4PdpnNA1r/RSnbDiP2+ra8+s1uz2JuMtTw7xYQx06+qWpyzLsTTm8mtZUAdyroUUpIA/vKNmNi519LmprALeD+m8ewIe8T5M=,iv:eyJzvfZxjcFxsknrg7r6RKBcZDNLGXbyOzn+S5hhUFo=,tag:5RnzW3eiGkzq/gUb8YdcjQ==,type:str]
+    pgp:
+        - created_at: "2025-01-28T01:02:38Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hF4Dlw80gGBdP4gSAQdADyxcIOOfDSqw12zSmZ2zHRLm9Ha8GqltmGJp+BkaszMw
+            he3opI7sGX4o2mcaeoy9KLSMGNWngRx8PEbZhbmKKe1v18KpJ6kQGArLidKtEo66
+            1GgBCQIQTYHdV8gZAEUSpM1u4xRU4KeU+Pw6Mpwcx2ee0Ei0Zr81asI4nibAZIFD
+            ZFTmqP5GzOqJfm86E2zUeyV3EYZ05ZQAjkCLq5uSmZ4lmsEuowgJZB7UEWNzLUAk
+            xQoNuO7Z4zaGvA==
+            =51uN
+            -----END PGP MESSAGE-----
+          fp: 870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
+    encrypted_regex: (env)|(repo)
+    version: 3.9.4

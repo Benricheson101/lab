@@ -1,0 +1,93 @@
+# yaml-language-server: $schema=https://creativeprojects.github.io/resticprofile/jsonschema/config.json
+version: "2"
+global:
+    initialize: true
+    scheduler: systemd
+mixins:
+    b2-cloud:
+        base-dir: /etc/resticprofile
+        password-file: password.txt
+        repo: ENC[AES256_GCM,data:O3CVzSxmVmhAGLlKhxbezkPkFq6MHB+wkvj4zxW+1td0z4cFpybeZ5cQs5dO,iv:7utb9R1MK9HC0403+S0kpJ2lPIkP9THfqvcZvPo0uKo=,tag:sxZAqOracEoTy65NyedRpA==,type:str]
+        env:
+            RESTIC_COMPRESSION: ENC[AES256_GCM,data:YmaJ,iv:IdY/Z3PRPlUyjR3vk4TGQ0uPjiie+VVZJHxqqaIhiH4=,tag:i6LqvORLWmGs48euqxA4OA==,type:str]
+            AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:5cBh0q5mXiWhrIWmos+onTPAF46V4fZMww==,iv:WWx+OZ4mReMg25GW1WcWPZxLPOS8nn6XZrgbsO0KCNw=,tag:Z9vnYOpsGLoUsc5R6HfaTQ==,type:str]
+            AWS_SECRET_ACCESS_KEY: ENC[AES256_GCM,data:+CKHTlgb2ggzasnXDMMNo7dxktFbVnY7S3pPQ/Tn8A==,iv:f59h2JYwaoCfXPPqRtx9tleU3qnL4E7jtlsGv1qsEgk=,tag:tpAarW+REUI0z+Lu/DStkg==,type:str]
+    base-profile:
+        backup:
+            host: cloud
+            one-file-system: true
+            exclude-caches: true
+            exclude-file: excludes.txt
+            no-error-on-warning: true
+            schedule-permission: system
+        retention:
+            before-backup: false
+            after-backup: true
+            keep-daily: 7
+            keep-weekly: 4
+            keep-monthly: 6
+            keep-within: 3h
+            prune: false
+            host: true
+profiles:
+    authentik:
+        use:
+            - b2-cloud
+            - base-profile
+        backup:
+            tag:
+                - authentik
+            schedule: daily
+            source:
+                - /home/ben/docker/authentik/backup
+            run-before: |
+                pushd /home/ben/docker/authentik
+                mkdir backup
+                pushd backup
+                . ./backup.env
+                docker exec -t -e=PG{USER,PASSWORD,DATABASE} authentik-postgresql-1 pg_dumpall --clean --if-exists > database.sql
+                mkdir ak_{certs,media,templates}
+                docker cp -a authentik-worker-1:/media/. ./ak_media/.
+                docker cp -a authentik-worker-1:/certs/. ./ak_certs/.
+                docker cp -a authentik-worker-1:/templates/. ./ak_templates/.
+            run-after: |
+                pushd /home/ben/docker/authentik
+                rm -rf backup
+    traefik:
+        use:
+            - b2-cloud
+            - base-profile
+        backup:
+            tag:
+                - traefik-dedi
+            schedule: monthly
+            source:
+                - /home/ben/docker/traefik
+    prune:
+        use:
+            - b2-cloud
+        prune:
+            schedule: monthly
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2025-01-28T04:03:21Z"
+    mac: ENC[AES256_GCM,data:yswipM9rGtXtHGOrzepoEDpSOykvd3CB0EmLkykxy2g+84uYNr3z57wwvDR6UaVU5OmPvIvAK+2ehS8+JLz3EwW/bG+AdAmvqNRuewiwqyN9OctvNIqCNLDKSKqFRbRLZr5EnoYVJaqVGJgNmlcZoEeDGeYgfSNs+ABRZfpj94E=,iv:dICkRJMTy4WT5VFWcnlludjsTJ1khSoKqzZncNtPwjQ=,tag:qmmN3X9t32f0WTGB3ecImQ==,type:str]
+    pgp:
+        - created_at: "2025-01-28T00:39:48Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hF4Dlw80gGBdP4gSAQdA3KIYqNNL+OFxtuESisjSLA/lcAzsRznvfum6AZ07kgAw
+            0cHg/1ZREgUeOPkCDfE+M+ELpI+CbBadG+ex2TpW/fvFHb1kt1myK8FWQMu/ycL7
+            1GgBCQIQVcsnp0DGNqbb1eWnfcEyTmKHyWHRO+vC2AhLDEiI4RNW15aViowcvnKJ
+            tsDYqMTKDeUmsy6A4yv4x94fJfgJ4bzVRRgPnz0JbNWI0TPIZlUWnUJ51nDzBHZ3
+            lSqNfvd3drzBqg==
+            =vg7W
+            -----END PGP MESSAGE-----
+          fp: 870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
+    encrypted_regex: (env)|(repo)
+    version: 3.9.4
