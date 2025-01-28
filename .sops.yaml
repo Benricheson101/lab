@@ -1,0 +1,5 @@
+creation_rules:
+  - path_regex: profiles\.yaml
+    encrypted_regex: '(env)|(repo)'
+    pgp: >-
+      870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
