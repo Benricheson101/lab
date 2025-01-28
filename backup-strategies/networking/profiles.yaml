@@ -1,0 +1,98 @@
+# yaml-language-server: $schema=https://creativeprojects.github.io/resticprofile/jsonschema/config.json
+version: "2"
+global:
+    initialize: true
+    scheduler: systemd
+mixins:
+    b2-homelab:
+        base-dir: /etc/resticprofile
+        repo: ENC[AES256_GCM,data:9XF+mqzPBgYyQnuGN7McX6qHkurbXGVMsJ6mxyK2U4mSMEXLpCBsU8yKVhq5exv/yilWIS8GRw==,iv:V7+Afpj4fNvC5BIqgxFCJSoHkfeFMxIdJaP9nVnNfn0=,tag:n6ADbwbVYrI3gOx2Hu0wEQ==,type:str]
+        password-file: password.txt
+        env:
+            RESTIC_COMPRESSION: ENC[AES256_GCM,data:FI3n,iv:a1mhtjEuvxcZpJ+jbd9sKogQZGTVOKb5ErKuUVoFR+o=,tag:k9cMx8DYewqLbqlL7yF6+A==,type:str]
+            AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:jLUVSx2q0M8RN45rOFCjkULIHZUYll/9NQ==,iv:jYw9g1dL+CnCjYr9Xl2V2Qd3lqPDLvd172PYBqxwC7s=,tag:uybhKqEpaZn8ZPwDv5b2zg==,type:str]
+            AWS_SECRET_ACCESS_KEY: ENC[AES256_GCM,data:HMrr4058IxS2EcPf4hqmtwDLj91Gye3t6WuEeWWOTQ==,iv:tCv/lwALQcGDFv0oEjvklik6Sw3zmObmnvdX2WJGOYI=,tag:Fa5ovwgk2458K+6riycqrA==,type:str]
+    base-profile:
+        backup:
+            one-file-system: true
+            exclude-caches: true
+            exclude-file: excludes.txt
+            no-error-on-warning: true
+            schedule-permission: system
+        retention:
+            before-backup: false
+            after-backup: true
+            keep-daily: 7
+            keep-weekly: 4
+            keep-monthly: 6
+            keep-within: 3h
+            prune: false
+            host: true
+profiles:
+    dns:
+        use:
+            - b2-homelab
+            - base-profile
+        backup:
+            tag:
+                - knot
+            schedule: daily
+            source:
+                - /var/lib/knot
+                - /etc/knot
+                - /etc/knot-resolver
+                - /opt/AdGuardHome/AdGuardHome.yaml
+            run-before: |
+                knotc zone-freeze
+                knotc zone-flush
+            run-finally: |
+                knotc zone-thaw
+    traefik:
+        use:
+            - b2-homelab
+            - base-profile
+        backup:
+            schedule: daily
+            tag:
+                - traefik
+                - traefik-internal
+            source:
+                - /etc/traefik
+    authentik-outpost:
+        use:
+            - b2-homelab
+            - base-profile
+        backup:
+            schedule: weekly
+            tag:
+                - authentik-outpost
+            source:
+                - /home/ben/authentik
+    prune:
+        use:
+            - b2-homelab
+        prune:
+            schedule: weekly
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2025-01-28T05:46:59Z"
+    mac: ENC[AES256_GCM,data:LPAOro4PQNBWGGB7o2LLfc2Vms3UH4ohgPnWt3CipM8jKBBFPIqyez0X04g62tsiOGYLMTdGpdwWbLnMnUyqprAu6w8zm4lPcdRXjYeIYIyQU0sHJqa22a1wvhErLddQ9qvU5W+ACMYcM7lZpXSIXZpURxhYANG4gwvMb0biw/w=,iv:zUvwwVvUTg5LTgqOZfmlUmU3SzV3C235XSI8LUNTje0=,tag:dsxSlxfWWDo/8bIEJed8rQ==,type:str]
+    pgp:
+        - created_at: "2025-01-28T05:29:55Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hF4Dlw80gGBdP4gSAQdA9m3l+j1eFHOyXhrsdMnt4VLyxBs6s20i/BnvKjft3yEw
+            rV45LdyIlihxuON6c4xG04ioie3LUlrDnvN3dj3+Q0EqhidpwzHAdhHmszWSjc0H
+            1GYBCQIQPa8aCVnjUGOQLm/XwoDhH4wDLJy/d63o94uYpvaMeHD9aMD6sAa6Eu4j
+            xqyHf2sSY4QAH8OpkCsNNjnRg3xRfR/Xl/+sHvZAJzSSW1Ja+92mocesZqc+ah8f
+            u59RNAe+9pA=
+            =RKVo
+            -----END PGP MESSAGE-----
+          fp: 870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
+    encrypted_regex: (env)|(repo)
+    version: 3.9.4
