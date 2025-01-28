@@ -55,7 +55,6 @@ profiles:
             schedule: daily
             tag:
                 - traefik
-                - traefik-internal
             source:
                 - /etc/traefik
     authentik-outpost:
@@ -74,8 +73,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-01-28T15:34:41Z"
-    mac: ENC[AES256_GCM,data:Ibvt3054eiJajxRTT9sD+Tq7PbCjWvCKoQkawI9qxFXVhx02guFCXbMNkeXJnM7FWyohdmEaRObWLcmGeA8qkIGvFYU65C6jksyZM+Um+lEkeuRZmYs+hBin6RSCAcNKPbW66x6rN1Uw+cGZxxS692GVAHpdJv9gM26iDowyvRw=,iv:ncG+v1ZU/I1NsKISqmhGdwBPHp2sBMF8ZHVhtGYHckg=,tag:MxMz7BsHV2ahrzn4VZumwg==,type:str]
+    lastmodified: "2025-01-28T15:51:04Z"
+    mac: ENC[AES256_GCM,data:xPuq13CoAv0yxGrz6zX1cZyxXw50Hio827EgdBR+um7Rh+6Q1LRGwRcH1W0GnhisSMB5DvwlsW12VWDqd00pHx8XzqGyJTFLUQseI2xxJWehx5sDtbdw4abxsySDDQ+1Y8RFSWhC7NvRXsCPcLuS8Bteri8Mpo+DwC71DjEFv7g=,iv:kGfzqGq1SYf+HxkTQM3VsyfGclinj94jPUXu9rUKOqs=,tag:cjOhV5f+eZY59nMcySa4EQ==,type:str]
     pgp:
         - created_at: "2025-01-28T05:29:55Z"
           enc: |-
