@@ -1,10 +1,6 @@
----
 - name: Basic system tasks
   hosts: rocky
   roles:
     - rocky
 
-- name: Configure DNS servers
-  hosts: dns
-  roles:
-    - knot
+- import_playbook: dns.yml
