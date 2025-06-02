@@ -1,0 +1,4 @@
+---
+plugin: cloud.terraform.terraform_provider
+project_path: ../infra
+ansible_user: ben

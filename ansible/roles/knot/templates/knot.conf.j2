@@ -1,0 +1,64 @@
+# {{ansible_managed}}
+
+server:
+  rundir: /run/knot
+  user: knot:knot
+  automatic-acl: on
+{%for i in knot.interfaces%}
+  listen: {{i.ip}}@{{i.port}}
+{%endfor%}
+
+database:
+  storage: /var/lib/knot
+
+log:
+  - target: syslog
+    server: debug
+    control: debug
+    zone: debug
+    quic: debug
+    any: debug
+
+remote:
+  - id: resolver
+    address: 127.0.0.1@5302
+
+mod-dnsproxy:
+  - id: default
+    remote: resolver
+    fallback: on
+    catch-nxdomain: false
+    timeout: 500
+
+{%if knot.queryacl_address%}
+mod-queryacl:
+  - id: default
+{%for a in knot.queryacl_address%}
+    address: {{a}}
+{%endfor%}
+{%endif%}
+
+key:
+{%for k in knot.key%}
+  - id: {{k.id}}
+    algorithm: {{k.algorithm}}
+    secret: {{k.secret}}
+{%endfor%}
+
+acl:
+  - id: allow_admin_update
+    key: admin
+    action: [update, transfer]
+
+template:
+  - id: default
+    storage: /var/lib/knot
+    acl: [allow_admin_update]
+
+zone:
+{%for z in knot.zones%}
+  - domain: {{z}}
+{%if knot.queryacl_address%}
+    module: mod-queryacl/default
+{%endif%}
+{%endfor%}

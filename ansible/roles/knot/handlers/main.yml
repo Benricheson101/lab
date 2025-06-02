@@ -1,0 +1,6 @@
+- name: Restart Knot Authoritative
+  listen: restart knot
+  become: true
+  service:
+    name: knot
+    state: restarted

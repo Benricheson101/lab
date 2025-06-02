@@ -1,0 +1,62 @@
+---
+- name: Install DNS servers
+  become: true
+  dnf:
+    name:
+      - knot
+      - knot-resolver
+    state: present
+
+- name: ensure knot config directory exists
+  become: true
+  file:
+    path: /etc/knot
+    recurse: true
+    state: directory
+
+- name: Start Knot Authoritative
+  become: true
+  systemd_service:
+    name: knot
+    enabled: true
+    state: started
+
+- name: Configure Knot Authoritative
+  become: true
+  block:
+    - name: Configure Knot
+      template:
+        src: knot.conf.j2
+        dest: /etc/knot/knot.conf
+        owner: knot
+        group: knot
+        backup: true
+      register: knot_conf
+
+    - name: Check Knot config
+      command: knotc conf-check
+      notify: restart knot
+      when: knot_conf is changed
+
+  rescue:
+    - name: Restore backed up config
+      copy:
+        remote_src: true
+        src: '{{knot_conf.backup_file}}'
+        dest: /etc/knot/knot.conf
+
+    - name: explode
+      fail:
+        msg: failed to do the knot thing
+  always:
+    - name: Delete backup
+      file:
+        path: '{{knot_conf.backup_file}}'
+        state: absent
+      when: knot_conf is changed
+
+- name: Provision zones
+  loop: '{{knot.zones}}'
+  include_tasks: init_zones.yml
+  vars:
+    zone: '{{item}}'

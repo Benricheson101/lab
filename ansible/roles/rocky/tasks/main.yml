@@ -1,0 +1,22 @@
+---
+- name: Update packages with dnf
+  become: true
+  dnf:
+    state: latest
+
+- name: Install epel
+  become: true
+  dnf:
+    name: epel-release
+    state: present
+
+- name: Install basic packages
+  become: true
+  dnf:
+    name:
+      - vim
+      - htop
+      - python3
+      - python3-pip
+      - grep
+    state: present

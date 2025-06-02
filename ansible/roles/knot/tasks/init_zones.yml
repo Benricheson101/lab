@@ -1,0 +1,27 @@
+---
+- name: Check if zone file exists
+  stat:
+    path: /var/lib/knot/{{zone}}.zone
+  register: zone_stat
+
+- name: Create zone file
+  become: true
+  file:
+    path: /var/lib/knot/{{zone}}.zone
+    state: touch
+  when: not zone_stat.stat.exists
+
+- name: Check if zone is initialized
+  become: true
+  command: grep '\s\+SOA\s\+' '/var/lib/knot/{{zone}}.zone'
+  register: has_soa
+  changed_when: has_soa.rc != 0
+  failed_when: has_soa.rc != 0 and has_soa.rc != 1
+
+- name: Create SOA record
+  become: true
+  when: has_soa.changed
+  shell: |
+    knotc zone-begin {{zone}}.
+    knotc zone-set -- @ 7200 SOA {{knot.ns}}. admin.pupy.cloud. 0 86400 900 691200 3600
+    knotc zone-commit --
