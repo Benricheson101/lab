@@ -11,25 +11,40 @@ knot:
     key:
         - id: admin
           algorithm: hmac-sha256
-          secret: ENC[AES256_GCM,data:CMnGS7iYanxC44ekApaVLJ9hasWdqYV4FwPQQV0rY8G+tD1xXVW2ckf/xME=,iv:LLZP8ewp4H7QNsuIxCGoMi6kNiClp3Fx+h9G6cilqrU=,tag:JMz0bhN6FAYRBZcY3bqhzg==,type:str]
+          secret: ENC[AES256_GCM,data:3dD9MYS+H07FPP6Lfmu861DZmznC75Yd4Gyw8M7RtKBuqzUJeixXnf/T9FI=,iv:NDS26twC7Zlsd6U+oODIff1lapRnHgmQpoMoIFmTEXk=,tag:AyakeDzTMU3U7+ziCutPEA==,type:str]
     queryacl_address:
         - 192.168.8.0/24
         - 127.0.0.1
     ns: ns.pupy.cloud
+knot_resolver:
+    interfaces:
+        - ip: 0.0.0.0
+          port: 5302
+    management:
+        ip: 127.0.0.1
+        port: 5000
+    forward:
+        - subtree:
+            - pupy.cloud
+          servers:
+            - 127.0.0.2
+          options:
+            authoritative: true
+            dnssec: false
 sops:
-    lastmodified: "2025-06-02T00:20:50Z"
-    mac: ENC[AES256_GCM,data:Z/ANikAE68yPQ194a/wIQmJT33ZwC8H3Eh2cXLU2pj6CcumZubxwH3Y8ZD43vDzF4eGylvPUXjgEBXq1HIt/X0hI5oUAZFLTZNFYfS17/Kn24xDa8Zez7CbIQUFkRXALfxMxu8xqh+oqIFiRQwC2FXvGsXqgNfAIiT3ai81qS7s=,iv:llTxabmX5ACKsZGCI50YFcijerVtBwGafjylk/6uILA=,tag:3kkmbeNNj4VI1M6VPZqbXg==,type:str]
+    lastmodified: "2025-06-02T02:28:08Z"
+    mac: ENC[AES256_GCM,data:6mRQ42nk2W0Kr+i7Ns72OYsxl5SbuZEpFTQHa5npABeCILkXz+Xr5moiKmu+IVUXIkZih6lBu2Gcfp3qNAaHuJT+31KF5yFsYlkP2CEt+Eyr04izY+Zr9TrZmYy093ed4xUZ06CdUFySEj85bn5RMijj/LlNO5KT/1W2qwQNcE8=,iv:munpMXR3XYhrvRManO2TB+0Ol2GM97Zsyo4++TJnhtc=,tag:1GMIs+6yPvEMoQlnt/IV4A==,type:str]
     pgp:
-        - created_at: "2025-06-02T00:20:50Z"
+        - created_at: "2025-06-02T02:28:08Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hF4Dlw80gGBdP4gSAQdA+SXEnTKWB+SLQqm5UG3oAC+C+irg/nVP/v+1z1d5x30w
-            +/WtFEg0v5CxyfgTJtQ9dZX9tGQSzLZe2DJDZ54M1llOCrTp/68Gm6BO4RHthLa0
-            1GYBCQIQPmtDeLQTCUwVL4PRfC3MUcltyBGoJpIJnrRPR3wo6LMoMUOl/fkfKORx
-            3145MnVKlUZKUGBZBZM2ITohVg2xWBs8v0jt03G3/ILkR2grEoU+egHPpImbCVmA
-            yZ/FkDxv0yw=
-            =qATO
+            hF4Dlw80gGBdP4gSAQdA9Agau+xzXhnidMZadoW2UorNJBX0c+vqngNV9r/l/jkw
+            wP3EagZK/harkt9WEGKauxf1iDSseu+yby6jhCot6auXerfN3fMGxL8ncAvvrQDH
+            1GgBCQIQR0ecprLmGdTRKEFo+AIjjAjbk6nnF9iOOCHoDgu0s+aFMmu+glxHFINV
+            +LEZTgPTs5KlhX3kcpjGDZ7zZfmwvcEv0myIIlxHK2n/HpDghoA2o/QsyqMx2T/G
+            MLCx/NOlh9/0Mg==
+            =NTk/
             -----END PGP MESSAGE-----
           fp: 870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
     encrypted_regex: (secret)

@@ -1,12 +1,11 @@
-- name: Install DNS servers
+- name: Install Knot
   become: true
   dnf:
     name:
       - knot
-      - knot-resolver
     state: present
 
-- name: ensure knot config directory exists
+- name: Ensure knot config directory exists
   become: true
   file:
     path: /etc/knot

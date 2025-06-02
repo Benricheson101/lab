@@ -1,0 +1,61 @@
+- name: Add cznic repo
+  become: true
+  get_url:
+    url: https://copr.fedorainfracloud.org/coprs/g/cznic/knot-resolver/repo/epel-9/group_cznic-knot-resolver-epel-9.repo
+    dest: /etc/yum.repos.d/group_cznic-knot-resolver-epel-9.repo
+
+- name: Install knot-resolver
+  become: true
+  dnf:
+    name:
+      - knot-resolver
+    state: present
+
+- name: Ensure knot-resolver config directory exists
+  become: true
+  file:
+    path: /etc/knot-resolver
+    recurse: true
+    state: directory
+
+- name: Start knot-resolver
+  become: true
+  systemd_service:
+    name: knot-resolver
+    enabled: true
+    state: started
+
+- name: Configure knot-resolver
+  become: true
+  block:
+    - name: Configure knot-resolver
+      template:
+        src: config.yaml.j2
+        dest: /etc/knot-resolver/config.yaml
+        owner: knot
+        group: knot
+        backup: true
+      register: kres_conf
+
+    - name: Check knot-resolver config
+      become: true
+      command: kresctl validate /etc/knot-resolver/config.yaml
+      notify: reload kres
+      when: kres_conf is changed
+
+  rescue:
+    - name: Restore backed up config
+      copy:
+        remote_src: true
+        src: '{{kres_conf.backup_file}}'
+        dest: /etc/knot-resolver/config.yaml
+
+    - name: explode
+      fail:
+        msg: failed to do the knot-resolver thing
+  always:
+    - name: Delete backup
+      file:
+        path: '{{kres_conf.backup_file}}'
+        state: absent
+      when: kres_conf is changed

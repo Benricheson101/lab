@@ -2,3 +2,4 @@
   hosts: dns
   roles:
     - knot
+    - knot-resolver

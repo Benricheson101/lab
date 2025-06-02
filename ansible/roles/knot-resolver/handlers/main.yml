@@ -1,0 +1,4 @@
+- name: Reload knot-resolver
+  become: true
+  listen: reload kres
+  command: kresctl reload
