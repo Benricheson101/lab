@@ -12,10 +12,12 @@
 
 - name: Check if zone is initialized
   become: true
-  command: grep '\s\+SOA\s\+' '/var/lib/knot/{{zone}}.zone'
+  shell: grep '\s\+SOA\s\+' '/var/lib/knot/{{zone}}.zone'
   register: has_soa
   changed_when: has_soa.rc != 0
-  failed_when: has_soa.rc != 0 and has_soa.rc != 1
+  failed_when:
+    - has_soa.rc != 0
+    - has_soa.rc != 1
 
 - name: Create SOA record
   become: true

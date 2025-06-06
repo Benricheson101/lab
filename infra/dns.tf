@@ -1,54 +1,58 @@
-resource "proxmox_vm_qemu" "dns_vm" {
-  name        = "dns-tf"
-  vmid        = 502
-  target_node = var.proxmox_host
-  clone       = var.template_name
-  full_clone  = "true"
-  agent       = 1
-  os_type     = "cloud-init"
-  scsihw      = "virtio-scsi-pci"
-  boot        = "order=scsi0"
+resource "proxmox_virtual_environment_vm" "dns_vm" {
+  name = "dns-tf"
 
-  ciuser     = var.ciuser
-  cipassword = var.cipassword
-  sshkeys    = var.ssh_key
-  ipconfig0  = "ip=dhcp"
+  node_name = var.pve_node
 
-  memory = 1024 * 4
+  stop_on_destroy = false
+
+  initialization {
+    user_account {
+      username = var.ciuser
+      password = var.cipassword
+      keys = var.ssh_keys
+    }
+
+    ip_config {
+      ipv4 {
+        address = "dhcp"
+      }
+    }
+  }
+
+  memory {
+    dedicated = 1024 * 8
+    floating = 1024 * 8
+  }
 
   cpu {
-    cores   = 4
     sockets = 1
-    type    = "x86-64-v2-AES"
+    cores = 4
+    type = "x86-64-v2-AES"
   }
 
-  disk {
-    type    = "cloudinit"
-    slot    = "ide2"
-    storage = "local-lvm"
-  }
+  serial_device {}
 
-  disk {
-    format = "raw"
-    slot    = "scsi0"
-    size    = "64G"
-    type    = "disk"
-    storage = "local-lvm"
-  }
-
-  network {
-    id     = 0
-    model  = "virtio"
+  network_device {
     bridge = "vmbr0"
   }
 
-  serial {
-    id   = 0
-    type = "socket"
+  agent {
+    enabled = true
+  }
+
+  disk {
+    datastore_id = "local-lvm"
+    file_id = proxmox_virtual_environment_download_file.rocky_cloud_image.id
+    interface = "virtio0"
+    iothread = true
+    size = 20
   }
 }
 
 resource "ansible_host" "dns_vm" {
-  name = proxmox_vm_qemu.dns_vm.default_ipv4_address
+  name = flatten(proxmox_virtual_environment_vm.dns_vm.ipv4_addresses)[1]
   groups = ["dns", "rocky"]
+  variables = {
+    ansible_user = var.ciuser
+  }
 }

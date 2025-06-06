@@ -12,9 +12,6 @@ network:
     - interface: {{i.ip}}@{{i.port}}
 {%endfor%}
 
-management:
-  interface: {{knot_resolver.management.ip}}@{{knot_resolver.management.port}}
-
 {%if knot_resolver.forward%}
 forward: {{knot_resolver.forward}}
 {%endif%}

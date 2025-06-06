@@ -1,13 +1,15 @@
 creation_rules:
   - path_regex: profiles\.yaml
     encrypted_regex: '(env)|(repo)'
-    pgp: &pgp >-
+    pgp: >-
       870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
 
   - path_regex: .+\.sops.ya?ml
-    encrypted_regex: '(secret)'
-    ppg: *pgp
+    encrypted_regex: '^(secret)$'
+    pgp: >-
+      870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
 
   - path_regex: infra/.env
     encrypted_regex: '(?i)(password|secret)'
-    pgp: *pgp
+    pgp: >-
+      870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
