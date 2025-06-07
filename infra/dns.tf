@@ -47,7 +47,7 @@ resource "proxmox_virtual_environment_container" "dns_ct" {
 }
 
 resource "proxmox_virtual_environment_firewall_rules" "dns-inbound" {
-  vm_id = proxmox_virtual_environment_container.dns_ct.vm_id
+  vm_id     = proxmox_virtual_environment_container.dns_ct.vm_id
   node_name = proxmox_virtual_environment_container.dns_ct.node_name
 
   depends_on = [
@@ -56,11 +56,11 @@ resource "proxmox_virtual_environment_firewall_rules" "dns-inbound" {
   ]
 
   rule {
-    type = "in"
-    action = "ACCEPT"
-    comment = "Allow DNS traffic on port 53"
-    dport = "53"
-    proto = "udp"
+    type    = "in"
+    action  = "ACCEPT"
+    comment = "Allow DNS traffic on port 53/udp"
+    dport   = "53"
+    proto   = "udp"
   }
 
   rule {
