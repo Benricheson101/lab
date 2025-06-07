@@ -1,0 +1,61 @@
+- name: Add PostgreSQL rpm gpg key
+  rpm_key:
+    key: https://download.postgresql.org/pub/repos/yum/keys/PGDG-RPM-GPG-KEY-RHEL
+    state: present
+
+- name: Add PostgreSQL repo
+  dnf:
+    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    state: present
+
+- name: Ensure the crb repository is enabled
+  community.general.dnf_config_manager:
+    name:
+      - crb
+    state: enabled
+
+- name: Check if PostgreSQL dnf module is disabled
+  shell: dnf module list --disabled postgresql
+  register: pg_dnf_module
+  changed_when: pg_dnf_module.rc != 0
+  failed_when: false
+
+- name: Disable the built in PostgreSQL module
+  command: dnf -qy module disable postgresql
+  when: pg_dnf_module.rc != 0
+
+- name: Install PostgreSQL
+  dnf:
+    name:
+      - postgresql17-server
+      - postgresql17-devel
+    state: present
+
+- name: Install psycopg2
+  pip:
+    name: psycopg2-binary
+    state: present
+
+- name: Check if PostgreSQL is initialized
+  stat:
+    path: /var/lib/pgsql/17/data/postgresql.conf
+  register: pg_data
+
+- name: Initialize PostgreSQL
+  command: /usr/pgsql-17/bin/postgresql-17-setup initdb
+  when: not pg_data.stat.exists
+
+- name: Start PostgreSQL
+  service:
+    name: postgresql-17
+    enabled: true
+    state: started
+
+- name: Configure pg_hba.conf
+  include_tasks: hba.yml
+
+- name: Create databases
+  include_tasks: db.yml
+
+- name: Create users
+  include_tasks: users.yml

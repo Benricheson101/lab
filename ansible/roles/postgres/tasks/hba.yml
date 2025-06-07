@@ -1,0 +1,8 @@
+- name: Grant terraform user access to terraform database on LAN
+  postgresql_pg_hba:
+    dest: /var/lib/pgsql/17/data/pg_hba.conf
+    contype: host
+    users: terraform
+    databases: terraform
+    method: scram-sha-256
+    source: 192.168.4.0/22

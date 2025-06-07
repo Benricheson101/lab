@@ -3,5 +3,5 @@
   roles:
     - rocky
 
-# - import_playbook: dns.yml
+- import_playbook: dns.yml
 - import_playbook: db.yml

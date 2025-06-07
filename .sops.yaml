@@ -5,11 +5,11 @@ creation_rules:
       870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
 
   - path_regex: .+\.sops.ya?ml
-    encrypted_regex: '^(secret)$'
+    encrypted_regex: 'secret|passwords'
     pgp: >-
       870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
 
   - path_regex: infra/.env
-    encrypted_regex: '(?i)(password|secret)'
+    encrypted_regex: '(?i)(password|secret|token)'
     pgp: >-
       870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
