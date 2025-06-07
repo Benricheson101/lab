@@ -1,58 +1,77 @@
-resource "proxmox_virtual_environment_vm" "dns_vm" {
-  name = "dns-tf"
-
+resource "proxmox_virtual_environment_container" "dns_ct" {
   node_name = var.pve_node
 
-  stop_on_destroy = false
-
   initialization {
-    user_account {
-      username = var.ciuser
-      password = var.cipassword
-      keys = var.ssh_keys
-    }
-
     ip_config {
       ipv4 {
-        address = "dhcp"
+        address = "192.168.6.30/22"
+        gateway = "192.168.4.1"
       }
+    }
+
+    hostname = "dns-tf"
+
+    user_account {
+      keys     = var.ssh_keys
+      password = var.cipassword
     }
   }
 
   memory {
-    dedicated = 1024 * 8
-    floating = 1024 * 8
+    dedicated = 4 * 1024
+    swap      = 0
   }
 
   cpu {
-    sockets = 1
     cores = 4
-    type = "x86-64-v2-AES"
   }
 
-  serial_device {}
-
-  network_device {
-    bridge = "vmbr0"
-  }
-
-  agent {
-    enabled = true
+  network_interface {
+    name = "veth0"
   }
 
   disk {
     datastore_id = "local-lvm"
-    file_id = proxmox_virtual_environment_download_file.rocky_cloud_image.id
-    interface = "virtio0"
-    iothread = true
-    size = 20
+    size         = 8
+  }
+
+  operating_system {
+    template_file_id = proxmox_virtual_environment_download_file.rocky9_ct_2.id
+    type             = "centos"
+  }
+
+  startup {
+    order    = 1
+    up_delay = 15
   }
 }
 
-resource "ansible_host" "dns_vm" {
-  name = flatten(proxmox_virtual_environment_vm.dns_vm.ipv4_addresses)[1]
+resource "proxmox_virtual_environment_firewall_rules" "dns-inbound" {
+  vm_id = proxmox_virtual_environment_container.dns_ct.vm_id
+  node_name = proxmox_virtual_environment_container.dns_ct.node_name
+
+  depends_on = [
+    proxmox_virtual_environment_container.dns_ct,
+    proxmox_virtual_environment_cluster_firewall_security_group.basic-rules,
+  ]
+
+  rule {
+    type = "in"
+    action = "ACCEPT"
+    comment = "Allow DNS traffic on port 53"
+    dport = "53"
+    proto = "udp"
+  }
+
+  rule {
+    security_group = proxmox_virtual_environment_cluster_firewall_security_group.basic-rules.name
+  }
+}
+
+resource "ansible_host" "dns_ct" {
+  name   = replace(proxmox_virtual_environment_container.dns_ct.initialization[0].ip_config[0].ipv4[0].address, "//\\d+$/", "")
   groups = ["dns", "rocky"]
   variables = {
-    ansible_user = var.ciuser
+    ansible_user = "root"
   }
 }

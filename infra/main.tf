@@ -6,7 +6,7 @@ terraform {
     }
 
     proxmox = {
-      source = "bpg/proxmox"
+      source  = "bpg/proxmox"
       version = "0.78.1"
     }
   }
@@ -15,12 +15,12 @@ terraform {
 }
 
 provider "proxmox" {
-  endpoint = var.pve_endpoint
+  endpoint  = var.pve_endpoint
   api_token = var.pve_token
-  insecure = true
+  insecure  = true
 
   ssh {
-    agent = true
+    agent    = true
     username = "root"
   }
 }
