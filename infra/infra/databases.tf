@@ -1,6 +1,8 @@
 resource "proxmox_virtual_environment_container" "postgres_ct" {
   node_name = var.pve_node
 
+  vm_id = 201
+
   initialization {
     ip_config {
       ipv4 {

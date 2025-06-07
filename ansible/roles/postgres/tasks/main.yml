@@ -8,21 +8,26 @@
     name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
     state: present
 
-- name: Ensure the crb repository is enabled
-  community.general.dnf_config_manager:
-    name:
-      - crb
-    state: enabled
+- name: Check if crb is enabled
+  command: /usr/bin/crb status
+  changed_when: false
+  register: check_crb
 
+- name: Enable crb
+  command: /usr/bin/crb enable
+  when: "'disabled' in check_crb.stdout"
+
+  # TODO: the rpm_key thing makes an interactive "importing gpg key is this ok y/n" thing
+  # and idk how to make it not do that in this step
 - name: Check if PostgreSQL dnf module is disabled
-  shell: dnf module list --disabled postgresql
+  shell: dnf module list postgresql --enabled --assumeyes
   register: pg_dnf_module
-  changed_when: pg_dnf_module.rc != 0
+  changed_when: false
   failed_when: false
 
 - name: Disable the built in PostgreSQL module
   command: dnf -qy module disable postgresql
-  when: pg_dnf_module.rc != 0
+  when: "'postgresql' in pg_dnf_module.stdout"
 
 - name: Install PostgreSQL
   dnf:
@@ -44,6 +49,14 @@
 - name: Initialize PostgreSQL
   command: /usr/pgsql-17/bin/postgresql-17-setup initdb
   when: not pg_data.stat.exists
+
+- name: Bind to all interfaces
+  lineinfile:
+    path: /var/lib/pgsql/17/data/postgresql.conf
+    regexp: 'listen_addresses ='
+    line: "listen_addresses = '*'"
+    state: present
+  notify: restart postgres
 
 - name: Start PostgreSQL
   service:

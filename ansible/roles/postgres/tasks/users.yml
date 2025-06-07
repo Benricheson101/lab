@@ -16,3 +16,23 @@
     privs: ALL
     type: database
     objs: terraform
+
+- name: Create terraform user privileges
+  become_user: postgres
+  become: true
+  postgresql_privs:
+    login_db: terraform
+    roles: terraform
+    state: present
+    privs: ALL
+    type: database
+    objs: terraform
+
+- name: Change terraform database owner to terraform user
+  become_user: postgres
+  become: true
+  postgresql_owner:
+    login_db: terraform
+    new_owner: terraform
+    obj_type: database
+    obj_name: terraform

@@ -1,5 +1,5 @@
 variable "ssh_keys" {
-  type    = list(string)
+  type = list(string)
 }
 
 variable "cipassword" {}

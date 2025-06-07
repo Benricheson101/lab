@@ -1,6 +1,8 @@
 resource "proxmox_virtual_environment_container" "dns_ct" {
   node_name = var.pve_node
 
+  vm_id = 200
+
   initialization {
     ip_config {
       ipv4 {
