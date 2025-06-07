@@ -24,3 +24,10 @@ provider "proxmox" {
     username = "root"
   }
 }
+
+module "infra" {
+  source     = "./infra"
+  ssh_keys   = var.ssh_keys
+  pve_node   = var.pve_node
+  cipassword = var.cipassword
+}

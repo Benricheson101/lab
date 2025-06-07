@@ -51,4 +51,3 @@ resource "proxmox_virtual_environment_firewall_options" "fw" {
   input_policy  = "DROP"
   output_policy = "ACCEPT"
 }
-

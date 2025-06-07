@@ -9,7 +9,5 @@ variable "pve_node" {
 
 variable "pve_endpoint" {}
 variable "pve_token" {}
-# variable "token_id" {}
-# variable "token_secret" {}
 variable "cipassword" {}
 variable "ciuser" {}

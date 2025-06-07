@@ -36,7 +36,7 @@ resource "proxmox_virtual_environment_container" "dns_ct" {
   }
 
   operating_system {
-    template_file_id = proxmox_virtual_environment_download_file.rocky9_ct_2.id
+    template_file_id = proxmox_virtual_environment_download_file.rocky9_ct.id
     type             = "centos"
   }
 
