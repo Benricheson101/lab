@@ -1,5 +1,6 @@
 # TODO
 
+- [ ] Unattended upgrades
 - [x] Knot DNS
 - [ ] Knot DNS secondary
 - [x] Knot Resolver
@@ -8,3 +9,13 @@
 - [ ] MySQL
 - [ ] Database replication
 - [ ] Backups
+- [ ] Plex
+- [ ] -arr stack
+- [ ] Immich
+- [ ] Uptime Kuma
+- [ ] Grafana
+- [ ] Prometheus (?)
+- [ ] VPN (tailscale?)
+- [ ] Terraform DNS
+- [ ] Reverse proxy
+- [ ] GitHub Actions deploy

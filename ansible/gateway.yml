@@ -1,0 +1,4 @@
+- hosts: gateway
+  become: true
+  roles:
+    - haproxy

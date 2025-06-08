@@ -65,7 +65,7 @@ resource "proxmox_virtual_environment_firewall_rules" "postgres-inbound" {
     action  = "ACCEPT"
     comment = "Allow postgres traffic on port 5432/tcp"
     dport   = "5432"
-    # source = "192.168.4.0/22"
+    source = "192.168.4.0/22"
     proto = "tcp"
   }
 

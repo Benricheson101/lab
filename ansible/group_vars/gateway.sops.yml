@@ -1,0 +1,25 @@
+certbot_cloudflare_api_token: ENC[AES256_GCM,data:FW/vjzDknzh/Z/MAie2kXui+1Xs0im5kZLIDd/p07ZRmAgTQTVniDQ==,iv:yHuvl0TXjoE9/Bn0jHcDThmwQ0Rlho8sLhnYqSsN3d4=,tag:dFQw0JN2/DGgZrl8v6EW4w==,type:str]
+certificates:
+    - name: pupy.cloud
+      domains:
+        - pupy.cloud
+        - '*.pupy.cloud'
+letsencrypt_email: ENC[AES256_GCM,data:1L8tV1tYuDzRcXFOroo=,iv:WIsC0rjpW3zzf1FBFb5+O2zfzV1k+UfkfuejIZiq3x8=,tag:7bLgb8R6Dj1+l/4zVjGYgw==,type:str]
+sops:
+    lastmodified: "2025-06-08T05:43:38Z"
+    mac: ENC[AES256_GCM,data:CDxtDRWjssHBS99A3kr3REYZZDC8Ee5UWbPpCTGByn3Lw3sRli6XXVqKtgU881JIfhXugMYp/FuPi1KuNGk9bGWNNfksxv8/sy0naTIZCX91B2M+Yeh81FZMJ8XpAPxkouus+7pRhGN78+DriOs3FMV7hyLO50xsJ0JAMs7//P0=,iv:gEC+EXJr2TnysNAtsivzNQaExdZAW7rDC6lI6LntRSI=,tag:ls6fjEZGd4badm+VaGmmBQ==,type:str]
+    pgp:
+        - created_at: "2025-06-08T05:08:27Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hF4Dlw80gGBdP4gSAQdAnmZ9SPY5v6uKM94QL1bY1ay0HczqrN54j7KLr5lvIRQw
+            dKm+hN6v0M4A/SywDaM1Z0swVdxGdhzAIWghWVyQ0p7fcR+H9wOjMPPpx9aoYDMR
+            1GgBCQIQoLAglpW+mDWyGyXFVfkhlccKdBBxJdAP9Aw+sUYzemKciNGdK7ZxQqLM
+            XlHynz3ABHwuA1uerUuaDWbahfzgier6RXSWvfrz+y1HA2EiSbcoXwdT7X6jR61b
+            upe4MVVcBXePQQ==
+            =asaY
+            -----END PGP MESSAGE-----
+          fp: 870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
+    encrypted_regex: secret|passwords|token|email
+    version: 3.10.2

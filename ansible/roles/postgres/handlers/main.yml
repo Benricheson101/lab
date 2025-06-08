@@ -1,0 +1,7 @@
+- name: Restart PostgreSQL
+  become: true
+  listen: restart postgres
+  # command: systemctl restart postgresql-17
+  service:
+    name: postgresql-17
+    state: restarted
