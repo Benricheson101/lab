@@ -90,15 +90,29 @@ defaults
 
 frontend www
   bind :80
-  # bind :443 ssl crt {{certificates | map(attribute='name') | map('regex_replace', '^(.*)$', '/etc/haproxy/ssl/\\1.pem') | join(' ')}}
   bind :443 ssl crt /certs/
 
   http-request redirect scheme https unless { ssl_fc }
 
-  acl test_server hdr(host) -i test.pupy.cloud
+  {%for svc in reverse_proxy.https%}
+  acl host_{{svc.name}} hdr(host) -i {{svc.domain}}
+  {%endfor%}
 
-  use_backend test_server if test_server
+  {%for svc in reverse_proxy.https%}
+  use_backend {{svc.name}}_backend if host_{{svc.name}}
+  {%endfor%}
 
-backend test_server
+{%for svc in reverse_proxy.https%}
+backend {{svc.name}}_backend
   mode http
-  server web1 192.168.6.30:8000
+  balance {{svc.balance | d('roundrobin')}}
+
+  {%if svc.backend_group is defined%}
+  {%for host in groups[svc.backend_group]%}
+  server {{svc.name}}{{loop.index}} {{host}}:{{svc.backend_port | d('80')}}
+  {%endfor%}
+
+  {%elif svc.backend_ip is defined%}
+  server {{svc.name}}1 {{host}}:{{svc.backend_port | d('80')}}
+  {%endif%}
+{%endfor%}

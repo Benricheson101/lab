@@ -1,2 +1,36 @@
-- import_tasks: ./haproxy.yml
-# - import_tasks: ./certbot.yml
+- name: Add haproxy repo
+  become: true
+  get_url:
+    url: https://packages.zenetys.com/latest/redhat/zenetys-latest.repo
+    dest: /etc/yum.repos.d/zenetys-latest.repo
+
+- name: Install haproxy
+  become: true
+  dnf:
+    name: haproxy
+    state: present
+
+- name: Create directories
+  file:
+    path: '{{item}}'
+    state: directory
+    mode: '0700'
+  loop:
+    - /certs
+
+  # TODO: revert this if it fails to start
+- name: Configure haproxy
+  become: true
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    backup: true
+  register: haproxy_conf
+  notify: reload haproxy
+
+- name: Start haproxy
+  become: true
+  service:
+    name: haproxy
+    enabled: true
+    state: started

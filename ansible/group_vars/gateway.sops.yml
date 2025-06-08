@@ -1,25 +1,31 @@
+letsencrypt_email: ENC[AES256_GCM,data:4nuqMG/NPlxpG01uRMQ=,iv:co5RrjGVyW3bh8B7C2g40jxM7F8p8h/eOA8PPZF2RJU=,tag:up5qDBkU1DfFSDlv+K4UDg==,type:str]
+reload_haproxy: true
+certbot_cloudflare_api_token: ENC[AES256_GCM,data:9i7qqm/z7SE/eR7nhb0O5ZipgTDDy4DJBU9AndTBpiaZXORyrYB0Cg==,iv:LGpS/jj23A/eDU/Dx5Gq8vQuUN+89OclxFJ+KduRpuI=,tag:b5/jWAAPtgw11IVwah/abA==,type:str]
 certificates:
     - name: pupy.cloud
       domains:
         - pupy.cloud
         - '*.pupy.cloud'
-letsencrypt_email: ENC[AES256_GCM,data:NqXcLaX09xeGpxMKLj0=,iv:vo3w57m8shSNuZjCOtroN0bITAkV8R0kLVzsxElUcMQ=,tag:pFoMD9S3gAXplbPEU/fBYw==,type:str]
-reload_haproxy: true
-certbot_cloudflare_api_token: ENC[AES256_GCM,data:KXzP82btReiXT3y9+CsDjhkK7oI51Wxsz7jS8R+XpVGsVLQot/rFNw==,iv:0Pm3akZf3jUGEjImzKdbV2LnuamgwMXm+iYnjfZ92II=,tag:Ir7UvrcOhFrRk3ZJgDpFcQ==,type:str]
+reverse_proxy:
+    https:
+        - name: testing
+          domain: test.pupy.cloud
+          backend_group: dns
+          backend_port: 8000
 sops:
-    lastmodified: "2025-06-08T20:11:32Z"
-    mac: ENC[AES256_GCM,data:HWJizF4my71t4PoJJNKHo2rbA6zixZe3M+n9a9z4Op8U5AJfdb+gVPvnVGl5C0uEideHrwClLUyaQVZdeghPADsk1Y6S+eltt3K4L0KjhE9aCvpY43mKuHIyQKm4YipGpRTuy9kN46f8hACb5TVVsj0Jexjz7o0a+O+FcbHKZyw=,iv:Fv9WsByKmj3fDW9yApf6w/fuc7gYHlToHv0lLwMyOaQ=,tag:h1q2FCJG8LhAIVYIdiHvdg==,type:str]
+    lastmodified: "2025-06-08T20:51:02Z"
+    mac: ENC[AES256_GCM,data:WWp3fuaiIemA2hUUe068IQ5p6f1FqSjbfa0u1EmwF9yYOqGJ4qsdCbCX0wuDZygniztpEYKK0r1aavapyUYZuft08Zs/TG8pT6jzSmOA4IlhwAtysEcUueYTcZlJBIvYUq4MhgPdNSKYk0kmf0GHz17AmY/rD/hK+GOOfB8FUOQ=,iv:8tJGyeBp49iL0fGnLm5+7A3ctI3QV+ZK6QZ/CIAFFjs=,tag:mI369tIPft48Z7qfZ8Dgkw==,type:str]
     pgp:
-        - created_at: "2025-06-08T20:11:32Z"
+        - created_at: "2025-06-08T20:51:02Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hF4Dlw80gGBdP4gSAQdAG0I1+6B81ivXDZhUIuiN+Oj1KwEDP1QFsuSU4Al1RAMw
-            k0L7YlseAiBV2cN0YVctmPCKyZIXClSnp+T2rVGiId8lIujj7ozXNaOoq8aBHOxA
-            1GYBCQIQOgmt/lZmLbBH3pvDsjuihsrjNJPtzhCrmjWgqjJXq4w/lM0s/kOuLmUg
-            5Khe/SV0QnrL41S1k/rtpVg+Xs7RZx/WdTH9KTIK93VMw48E2G06+8s2aTbKud5n
-            FyNv70Fs/Gs=
-            =AKd8
+            hF4Dlw80gGBdP4gSAQdAPq5KMtl/UNXvudYJtkQ7QptypzHXwykeH01jBSQoSgAw
+            Z1VRkPqSEK6rbmTUVr4us4qEypDEvhFIoQ/QijdCUDYj7jAdLw62QtWzbDri04xB
+            1GgBCQIQEIjSWQFZcsCtD4xm0dJnwKWo3NI+PbQ3mVR3SeqssUP9EFejvTvZsVED
+            EJ8iD4I4E2XJwdRAy/eku6u1CbElfV967b5rGfSBHmT5QDWLdRokM6gsRAHPPfv5
+            QtS6DioXICEPKg==
+            =lJom
             -----END PGP MESSAGE-----
           fp: 870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
     encrypted_regex: secret|password|token|email
