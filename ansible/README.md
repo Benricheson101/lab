@@ -17,5 +17,5 @@
 - [ ] Prometheus (?)
 - [ ] VPN (tailscale?)
 - [ ] Terraform DNS
-- [ ] Reverse proxy
+- [x] Reverse proxy
 - [ ] GitHub Actions deploy
