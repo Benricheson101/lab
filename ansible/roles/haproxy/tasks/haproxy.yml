@@ -10,6 +10,14 @@
     name: haproxy
     state: present
 
+- name: Create directories
+  file:
+    path: '{{item}}'
+    state: directory
+    mode: '0700'
+  loop:
+    - /certs
+
   # TODO: revert this if it fails to start
 - name: Configure haproxy
   become: true

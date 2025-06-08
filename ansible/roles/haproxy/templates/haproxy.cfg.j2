@@ -90,7 +90,8 @@ defaults
 
 frontend www
   bind :80
-  bind :443 ssl crt {{certificates | map(attribute='name') | map('regex_replace', '^(.*)$', '/etc/haproxy/ssl/\\1.pem') | join(' ')}}
+  # bind :443 ssl crt {{certificates | map(attribute='name') | map('regex_replace', '^(.*)$', '/etc/haproxy/ssl/\\1.pem') | join(' ')}}
+  bind :443 ssl crt /certs/
 
   http-request redirect scheme https unless { ssl_fc }
 

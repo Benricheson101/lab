@@ -1,0 +1,88 @@
+- name: Remove system certbot package
+  dnf:
+    name: certbot
+    state: absent
+#
+- name: Install required system packages
+  dnf:
+    name:
+      - python-devel
+
+- name: Install certbot with pip
+  pip:
+    name:
+      - certbot
+      - certbot-dns-cloudflare
+    state: present
+
+- name: Create directories
+  file:
+    path: '{{item}}'
+    state: directory
+    mode: '0700'
+  loop:
+    - /root/.secrets
+    - /etc/letsencrypt
+
+- name: Create certbot creds file
+  template:
+    src: cloudflare-credentials.ini.j2
+    dest: /root/.secrets/cloudflare-credentials.ini
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: Create renew script
+  copy:
+    dest: /etc/letsencrypt/renew.sh
+    mode: +x
+    content: |
+      #!/usr/bin/env bash
+      certbot renew -q
+
+      certs=/etc/letsencrypt/live
+      for path in $(find $certs/* -type d -exec basename {} \;); do
+        cat ${certs}/${path}/{fullchain.pem,privkey.pem} > /certs/${path}.pem
+      done
+
+      {%if reload_haproxy%}
+      systemctl reload haproxy
+      {%endif%}
+
+- name: Create certificate with certbot
+  shell: |
+    certbot certonly \
+      --agree-tos \
+      --test-cert \
+      --dns-cloudflare \
+      --dns-cloudflare-credentials /root/.secrets/cloudflare-credentials.ini \
+      --noninteractive \
+      --email {{letsencrypt_email}} \
+      {{item.domains | map('regex_replace', '^', '-d ') | join(' ')}}
+
+    certs=/etc/letsencrypt/live
+    for path in $(find $certs/* -type d -exec basename {} \;); do
+      cat ${certs}/${path}/{fullchain.pem,privkey.pem} > /certs/${path}.pem
+    done
+  args:
+    # creates: /etc/letsencrypt/live/{{item.name}}/fullchain.pem
+    # TODO: split this into 2 steps
+    creates: /certs/{{item.name}}.pem
+  loop: '{{certificates}}'
+  register: create_certs
+  no_log: true
+
+  # TODO: how do I deal with interdependence like this? should i put this one in the haproxy role?
+- name: Reload haproxy
+  assert:
+    that: true
+    quiet: true
+  when: reload_haproxy
+  notify: reload haproxy
+
+- name: Create cron job for certbot
+  cron:
+    name: certbot
+    minute: 0
+    hour: 0,12
+    job: /etc/letsencrypt/renew.sh
