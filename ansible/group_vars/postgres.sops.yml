@@ -1,20 +1,24 @@
-passwords:
-    terraform: ENC[AES256_GCM,data:5/umcUWdC14djzCY4tRta0KdE/EQUQYYORDGRheRY4hVTx9e/36tJz1LwziEctIWhPLXosbcK5oB1BKjalO8diwggKRcCpWMLJ7BXq/ZKVSCxZwzfrX+tZOoqd+bDU31++njPe6Bc5QOXP4nbfEIGdQbK5nbBbL7Jd5JuCvH3U/WEQGptg==,iv:lDLDjGIbFSeytW4mwoyfxoy2Belem+d4UHMT8Yky3eI=,tag:ytUdtCRI2hrSEmJHAwEpdg==,type:str]
+postgres_users:
+    - name: terraform
+      password: ENC[AES256_GCM,data:N3z7VLUyFwgmSJQ7KD13JQVDMV3KgA==,iv:PMaJuCeBDmXAKPSIdEHHxVkZ7m84G3V3hfIKXpXTZYw=,tag:HYAFjPrgeW2U00DoDfrA9Q==,type:str]
+postgres_databases:
+    - name: terraform
+      owner: terraform
 sops:
-    lastmodified: "2025-06-07T19:20:05Z"
-    mac: ENC[AES256_GCM,data:zZrxQ6r38w2fyRwO8FJE14ysrbY6Q/DoDMQ4S9ND+6+17ICNS4+DF0vxqjj4Ag8hv5M4FdeDHgMzcPYmS2OFtfOEB8n+qYHPCU/CynGbDGLeAkekt7C2EAvomWXIUbaIR5hzoO8KumQLmOSeQZNSct+ABAmz6ebj82PFnac9cdk=,iv:oyoS8Tafq8I9ZAq7+EgH29r2Q3hiZuJ50ii6bk6Blno=,tag:nvvjOvHlfCQyCEFsXHxbLA==,type:str]
+    lastmodified: "2025-06-08T19:37:33Z"
+    mac: ENC[AES256_GCM,data:I7t8oURFrGbs5mPba6qaD0OlszcuyktlQJ0MyN1gXEj3iVZFpDB/I/dUktkGaUbBZleFSKaEoLBxz4wSGzDTAZiL79c641DKIIcbo430smFL8En2IpQ3czrTfaaADnX5xOxnKOIzz7+Z65tPKuIKNWKmu4TZA67UfiDtqc31y2M=,iv:t3TIpfgoBaV79FMgCadLYjAgs3cdRfuqny9bU0lUj/I=,tag:NV/NPRBXIdN9rElOwpcTrw==,type:str]
     pgp:
-        - created_at: "2025-06-07T19:20:05Z"
+        - created_at: "2025-06-08T19:37:33Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hF4Dlw80gGBdP4gSAQdAOkX/xRbJliOwDzigSEBH/iItaxzscfCqdiaWikO263gw
-            DMJNfXsObj4EqJHgfmapx+i+fXqQ7/ZH/k9ac+P7pUpVPsa+24yOMOb/ilcP1hJE
-            1GgBCQIQEZieChRfi0AmGE2CWppDgYH3c93J+0r3RA23yzzlbouhRVL98YerRIA0
-            K69e4QNix2ZO0wBruEY47A3Af6AeTW3c+qtuGZr4rGE2sVAp64aH7jHSWxHy9Soc
-            IBaiWMDfmAIt6w==
-            =Ea2E
+            hF4Dlw80gGBdP4gSAQdAxhauqP3vXeoAqk0tcXDDEm95RKb1+ZMwaoYcAwWuRmYw
+            rxyJI4KP7Af94CytRwzpv9y9pXBK48atvwq/434nyaJUytkH9+IlmVzkmyQExZMX
+            1GgBCQIQpkhDSV0e2hkhBwrJKOjNI+Za5Uwsj+/NqHGkRbUn7ohJAwOvmDxi++sE
+            bEeB64EOISkJsGRDLvzlBLBpJb+FvPgyyht72QFpV6VIafEQXEzK4Gqurj5598gc
+            7Ea3aSeNOe5c4Q==
+            =BVFT
             -----END PGP MESSAGE-----
           fp: 870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
-    encrypted_regex: secret|password
+    encrypted_regex: secret|password|token|email
     version: 3.10.2
