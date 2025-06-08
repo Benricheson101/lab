@@ -30,4 +30,6 @@ module "infra" {
   ssh_keys   = var.ssh_keys
   pve_node   = var.pve_node
   cipassword = var.cipassword
+  gateway    = var.gateway
+  lan        = var.lan
 }

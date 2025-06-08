@@ -4,3 +4,5 @@ variable "ssh_keys" {
 
 variable "cipassword" {}
 variable "pve_node" {}
+variable "gateway" {}
+variable "lan" {}

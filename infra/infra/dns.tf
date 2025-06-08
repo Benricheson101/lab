@@ -6,8 +6,8 @@ resource "proxmox_virtual_environment_container" "dns_ct" {
   initialization {
     ip_config {
       ipv4 {
-        address = "192.168.6.30/22"
-        gateway = "192.168.4.1"
+        address = "192.168.5.3/22"
+        gateway = var.gateway
       }
     }
 

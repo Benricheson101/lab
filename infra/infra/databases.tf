@@ -7,7 +7,7 @@ resource "proxmox_virtual_environment_container" "postgres_ct" {
     ip_config {
       ipv4 {
         address = "192.168.6.32/22"
-        gateway = "192.168.4.1"
+        gateway = var.gateway
       }
     }
 
@@ -55,17 +55,12 @@ resource "proxmox_virtual_environment_firewall_rules" "postgres-inbound" {
   vm_id     = proxmox_virtual_environment_container.postgres_ct.vm_id
   node_name = proxmox_virtual_environment_container.postgres_ct.node_name
 
-  depends_on = [
-    proxmox_virtual_environment_container.postgres_ct,
-    proxmox_virtual_environment_cluster_firewall_security_group.basic-rules,
-  ]
-
   rule {
     type    = "in"
     action  = "ACCEPT"
     comment = "Allow postgres traffic on port 5432/tcp"
     dport   = "5432"
-    source = "192.168.4.0/22"
+    source = var.lan
     proto = "tcp"
   }
 

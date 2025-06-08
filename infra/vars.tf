@@ -7,6 +7,14 @@ variable "pve_node" {
   default = "big-pve"
 }
 
+variable "gateway" {
+  default = "192.168.4.1"
+}
+
+variable "lan" {
+  default = "192.168.4.0/22"
+}
+
 variable "pve_endpoint" {}
 variable "pve_token" {}
 variable "cipassword" {}
