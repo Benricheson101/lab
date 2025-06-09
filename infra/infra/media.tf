@@ -21,6 +21,13 @@ variable "media_services" {
       cores = 1
       disk = 16
     }
+    qbittorrent = {
+      id = 513
+      ip = "192.168.5.13/22"
+      memory = 2
+      cores = 2
+      disk = 16
+    }
   }
 }
 

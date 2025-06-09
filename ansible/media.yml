@@ -15,3 +15,9 @@
   become: true
   roles:
     - arr
+
+- name: Install qBittorrent
+  hosts: qbittorrent
+  become: true
+  roles:
+    - qbittorrent

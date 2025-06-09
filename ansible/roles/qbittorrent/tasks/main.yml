@@ -1,0 +1,24 @@
+- name: Install qbittorrent-nox
+  dnf:
+    name: qbittorrent-nox
+    state: present
+
+- name: Create qbt group
+  group:
+    name: qbt
+    system: true
+    state: present
+
+- name: Create qbt user
+  user:
+    name: qbt
+    group: qbt
+    home: /opt/qbittorrent
+    system: true
+    state: present
+
+- name: Start qbittorrent
+  service:
+    name: qbittorrent-nox@qbt
+    state: started
+    enabled: true

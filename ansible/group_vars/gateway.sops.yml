@@ -1,6 +1,6 @@
-letsencrypt_email: ENC[AES256_GCM,data:3Z0WLcbcQcgsuqAfuew=,iv:dwekEaOr5KrtYpk7+LaC6cGgrOYvv6em4IWsba1lsbY=,tag:Yq4aG/8ypjQCRn17TGO0Ow==,type:str]
+letsencrypt_email: ENC[AES256_GCM,data:aNB1gNKXM7yebO1nJPE=,iv:ePHqsMpAAZ7QVtEYCReAkaIeFXYUWsBqhGrgovg9hHM=,tag:H2cbqBAp59Xf8fR1l5TO3A==,type:str]
 reload_haproxy: true
-certbot_cloudflare_api_token: ENC[AES256_GCM,data:Zv5RAhaZWEyDMrmMM4r0LBQCtcpXo+ZmHzVeEgeZkCsPEDSZYM8JAg==,iv:n+cv73KTXX+WYqLE3OodClM1pN4Dbj2ZMFCEjFM/7xY=,tag:3gA4+Dt/LjIBuacdAN6poA==,type:str]
+certbot_cloudflare_api_token: ENC[AES256_GCM,data:xK/i/YKL/sp5CaWoiS4IE1hOT3Sy59aJzElXMSpu4NLGUbSTNFXyoA==,iv:kuW6q3xZA/SKuzX3NCsLR9f6mFTkQrALEJqybKOqdKE=,tag:yEwb07+EJTNjfR3I1xok+Q==,type:str]
 certificates:
     - name: pupy.cloud
       domains:
@@ -25,20 +25,24 @@ reverse_proxy:
           domain: prowlarr-iac.pupy.cloud
           backend_group: prowlarr
           backend_port: 8080
+        - name: qbittorrent
+          domain: qbittorrent-iac.pupy.cloud
+          backend_group: qbittorrent
+          backend_port: 8080
 sops:
-    lastmodified: "2025-06-09T20:17:36Z"
-    mac: ENC[AES256_GCM,data:Oja3GQ7jn+ZqM7dG8qzVjkg3XqDrSDi2zzBzYtD79I3Km1ob3MXNAvL42SZY97d1ZHb9aejW+jANtpHNwIzXTFTjzA76Pn/vvK7XmWwroaVfhPaEwXY+Tn7vSfhBAdEq0KcbFsGF03s7SFNMAIV/FKfdS/O8EZafxz9wP3o1whw=,iv:DPlXNsD0MuHrp+nobdH9Zdq9fEfei3Je5Q9P2G4axFg=,tag:BA6lrKj3vEE88jcjZ01BCg==,type:str]
+    lastmodified: "2025-06-09T22:09:54Z"
+    mac: ENC[AES256_GCM,data:7PskryvUCacreO0Hu2oVjp/Av648/p4DaoPuczv4bJxaWURCV8zLTi3DZ2OkATEzFI54uZ/4iX0rNZIX6Fnj868PitKN1vp3+1gkJ6qauET8ex4I0AqcxXWaX/E9+1Tytj3aCWK7XjlW0zBLENtGcKbdiF797jfKM49Zvu8DLiA=,iv:8dupB0eIksgJqJDNHpPqv1pZOn18619X5zdELDCnLXY=,tag:DEbLB7Mwev2bxBEiQkcL/g==,type:str]
     pgp:
-        - created_at: "2025-06-09T20:17:36Z"
+        - created_at: "2025-06-09T22:09:54Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hF4Dlw80gGBdP4gSAQdA8vI8uMvSDDTVJXvVht/8OGGz90V69woIJ9uitwL18CMw
-            GcSBVvx8Tgov9dKasF2XE0NRqgEjHOYhBJGFWwk2tlHvqJhAFHWV1i316u76raOA
-            1GgBCQIQ3MqjNts44ZYmgRQMWr2LTL988+X9oYecSoy/RbYMqF3K1WqvyMAbCldm
-            qdzZTPwpTPwCJpvVZbFtiaSnjSO5Gqy1UTWr/NH6VTsXL1mAEOW2q1HupUiQH1vQ
-            2QDjsZTy4z5Uzw==
-            =wqXU
+            hF4Dlw80gGBdP4gSAQdASbqaFrPeKGPsXcAXVJD3Qu0pjaTkPoV09ncsTh3wJ34w
+            n7+JVZ/1XDD/2RLictRFyhZxRx3CUOqYgAIR6VxdbwULja+XUPhNoHP3ma4qa5TX
+            1GgBCQIQ+Ek6lhP1+gzz6rAOHv9fmcx44BllYgSvURnlnDOAPc4gSgnp6Lu/sH3B
+            +chjcBv0gySIxBb6BPyqSpmWLoYtLM09G8uTCGBHF8WpG1aabyoqNhjpCOK8xmSN
+            xJDlEKCg/lyMMg==
+            =9Ccg
             -----END PGP MESSAGE-----
           fp: 870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
     encrypted_regex: secret|password|token|email
