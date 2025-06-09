@@ -1,1 +1,4 @@
-sonarr_port: 8080
+service_port: 8080
+service_name: sonarr
+download_url: https://services.sonarr.tv/v1/download/main/latest?version=4&os=linux&arch=x64
+instance_name: Sonarr

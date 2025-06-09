@@ -1,0 +1,4 @@
+service_port: 8080
+service_name: radarr
+download_url: https://radarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=x64
+instance_name: Radarr

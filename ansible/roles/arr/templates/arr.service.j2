@@ -1,0 +1,14 @@
+[Unit]
+Description={{service_name}}
+After=syslog.target network.target
+
+[Service]
+User={{service_name}}
+Group={{service_name}}
+ExecStart=/opt/{{service_name}}/{{service_name | capitalize}}/{{service_name | capitalize}} -nobrowser
+TimeoutStopSec=20
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
