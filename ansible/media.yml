@@ -1,0 +1,5 @@
+- name: Configure PostgreSQL
+  hosts: sonarr
+  become: true
+  roles:
+    - sonarr

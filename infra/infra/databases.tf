@@ -2,6 +2,7 @@ resource "proxmox_virtual_environment_container" "postgres_ct" {
   node_name = var.pve_node
 
   vm_id = 201
+  tags = ["databases", "terraform_managed"]
 
   initialization {
     ip_config {
@@ -47,8 +48,6 @@ resource "proxmox_virtual_environment_container" "postgres_ct" {
     order    = 2
     up_delay = 30
   }
-
-  tags = ["terraform_managed"]
 }
 
 resource "proxmox_virtual_environment_firewall_rules" "postgres-inbound" {

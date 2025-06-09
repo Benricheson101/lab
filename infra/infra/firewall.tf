@@ -34,6 +34,14 @@ resource "proxmox_virtual_environment_cluster_firewall_security_group" "webserve
     dport   = "80"
     proto   = "tcp"
   }
+
+  rule {
+    type    = "in"
+    action  = "ACCEPT"
+    comment = "Allow HTTP traffic on non-standard high port"
+    dport   = "8080"
+    proto   = "tcp"
+  }
 }
 
 resource "proxmox_virtual_environment_firewall_options" "fw" {

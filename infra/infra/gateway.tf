@@ -2,6 +2,7 @@ resource "proxmox_virtual_environment_container" "gateway_ct" {
   node_name = var.pve_node
 
   vm_id = 202
+  tags = ["network", "terraform_managed"]
 
   initialization {
     ip_config {
@@ -30,6 +31,7 @@ resource "proxmox_virtual_environment_container" "gateway_ct" {
 
   network_interface {
     name = "veth0"
+    firewall = true
   }
 
   disk {
@@ -43,7 +45,7 @@ resource "proxmox_virtual_environment_container" "gateway_ct" {
   }
 
   startup {
-    order    = 3
+    order    = 1
     up_delay = 15
   }
 }
@@ -52,25 +54,8 @@ resource "proxmox_virtual_environment_firewall_rules" "gateway-inbound" {
   vm_id     = proxmox_virtual_environment_container.gateway_ct.vm_id
   node_name = proxmox_virtual_environment_container.gateway_ct.node_name
 
-  depends_on = [
-    proxmox_virtual_environment_container.gateway_ct,
-    proxmox_virtual_environment_cluster_firewall_security_group.basic-rules,
-  ]
-
   rule {
-    type    = "in"
-    action  = "ACCEPT"
-    comment = "Allow HTTPS traffic"
-    dport   = "443"
-    proto   = "tcp"
-  }
-
-  rule {
-    type    = "in"
-    action  = "ACCEPT"
-    comment = "Allow HTTP traffic"
-    dport   = "80"
-    proto   = "tcp"
+    security_group = proxmox_virtual_environment_cluster_firewall_security_group.webserver.name
   }
 
   rule {

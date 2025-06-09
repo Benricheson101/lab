@@ -2,6 +2,7 @@ resource "proxmox_virtual_environment_container" "dns_ct" {
   node_name = var.pve_node
 
   vm_id = 200
+  tags = ["network", "terraform_managed"]
 
   initialization {
     ip_config {
@@ -30,6 +31,7 @@ resource "proxmox_virtual_environment_container" "dns_ct" {
 
   network_interface {
     name = "veth0"
+    firewall = true
   }
 
   disk {
