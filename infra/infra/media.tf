@@ -14,6 +14,13 @@ variable "media_services" {
       cores = 1
       disk = 8
     }
+    prowlarr = {
+      id = 512
+      ip = "192.168.5.12/22"
+      memory = 1
+      cores = 1
+      disk = 16
+    }
   }
 }
 

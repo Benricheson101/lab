@@ -12,7 +12,7 @@ resource "proxmox_virtual_environment_container" "dns_ct" {
       }
     }
 
-    hostname = "dns-tf"
+    hostname = "dns"
 
     user_account {
       keys     = var.ssh_keys

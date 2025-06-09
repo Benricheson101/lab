@@ -12,7 +12,7 @@ resource "proxmox_virtual_environment_container" "postgres_ct" {
       }
     }
 
-    hostname = "postgres-tf"
+    hostname = "postgres"
 
     user_account {
       keys     = var.ssh_keys

@@ -12,7 +12,7 @@ resource "proxmox_virtual_environment_container" "gateway_ct" {
       }
     }
 
-    hostname = "gateway-tf"
+    hostname = "gateway"
 
     user_account {
       keys     = var.ssh_keys
