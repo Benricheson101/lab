@@ -21,6 +21,7 @@
       - dnf-automatic
       - tar
       - file
+      - tmux
     state: present
 
 # TODO: why does this time out???

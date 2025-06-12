@@ -10,7 +10,9 @@
 - [ ] Database replication
 - [ ] Backups
 - [ ] Plex
-- [ ] -arr stack
+- [x] -arr stack
+- [x] qBittorrent
+- [ ] ProtonVPN
 - [ ] Immich
 - [ ] Uptime Kuma
 - [ ] Grafana

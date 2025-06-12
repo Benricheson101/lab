@@ -1,0 +1,30 @@
+- name: Add Tailscale repo
+  get_url:
+    url: https://pkgs.tailscale.com/stable/rhel/9/tailscale.repo
+    dest: /etc/yum.repos.d/tailscale.repo
+
+- name: Install tailscale
+  dnf:
+    name: tailscale
+    state: present
+
+- name: Start tailscaled
+  service:
+    name: tailscaled
+    state: started
+    enabled: true
+
+- name: Check if tailscale is running
+  command: tailscale status
+  changed_when: false
+  failed_when: ts_status.rc != 0 and ts_status.rc != 1
+  register: ts_status
+
+
+- name: Start tailscale
+  command: |
+    tailscale up \
+      --accept-routes=false \
+      --accept-dns=false \
+      --auth-key="{{tailscale_auth_key}}"
+  when: ts_status.rc != 0

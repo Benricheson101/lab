@@ -19,3 +19,5 @@ variable "pve_endpoint" {}
 variable "pve_token" {}
 variable "cipassword" {}
 variable "ciuser" {}
+variable "pve_username" {}
+variable "pve_password" {}

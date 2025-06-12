@@ -3,3 +3,7 @@
   roles:
     - knot
     - knot-resolver
+
+- hosts: tailscale
+  roles:
+    - tailscale

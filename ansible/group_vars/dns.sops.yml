@@ -11,13 +11,15 @@ knot:
     key:
         - id: admin
           algorithm: hmac-sha256
-          secret: ENC[AES256_GCM,data:vVTEa0z9ki80K8GTRj2YEs5ZzlmMPKD1Rn494603ejb9Ema0ToRVF9e65FY=,iv:3OSq3s/j3zAacBfBabt4L2iyfl/ZN60ks+TABD9DoVw=,tag:v2NfCcCvXfaKTAiyY2lh8w==,type:str]
+          secret: ENC[AES256_GCM,data:hmY/7eW7WAnPXsPVJuNZYtSxl2TXq59G3tpyN00uvfck0bjegERxiHJD6nk=,iv:+zUseMrcvgctuWXiY+eqtBY2kczPi1HDEWgd8V/sBQo=,tag:NNgz9u62e1ig8UhRgAzJTQ==,type:str]
     queryacl_address:
         - 192.168.8.0/24
         - 127.0.0.1
     ns: ns.pupy.cloud
 knot_resolver:
     interfaces:
+        - ip: 192.168.5.3
+          port: 53
         - ip: 0.0.0.0
           port: 5302
     # management:
@@ -32,20 +34,20 @@ knot_resolver:
             authoritative: true
             dnssec: false
 sops:
-    lastmodified: "2025-06-06T22:22:49Z"
-    mac: ENC[AES256_GCM,data:7NTdKXM5K+1Vjmyamd+FnBo3eZAB+b4TJpYC+19f87ZcOCou6i3Oii2wxzVej+q24WYUwaHZD1MN+0uqrvpArislt0NtoNn+2KkR+vaFiZYAc85jwnk5XSfRimtkj8CFiCb14x92uYk5EtuOdBb7ERlwxGGJha5lYyQbAXhbInw=,iv:i4SjiolyRTRwNkOw9g1E+EJBWsy0XSJG4iYDEOpDVM8=,tag:BHejt2gifDeaE/RliApjHw==,type:str]
+    lastmodified: "2025-06-10T21:11:46Z"
+    mac: ENC[AES256_GCM,data:X+SxrAwB7Et/2iX9ozbPPhMKJtuLgZI9OxCClk6eUznbbvOjvLGQGefPYpShH0qSUROnMRbZBaECOUNqEbnc7jRrlOy2uLFhKfqHiwOCJnh34FRomGX5dEiXcSJIxGxnMfAZ0Fr93+9sD7VN0SO5rpnFG9qQf2qArQPqnkkoYqA=,iv:uw4fMkU6PNL/dSppx+kfKDw077lIOc49LVe0agTw2gQ=,tag:o/XvtxXxQ9LUn8ohaSvjgQ==,type:str]
     pgp:
-        - created_at: "2025-06-06T22:22:49Z"
+        - created_at: "2025-06-10T21:11:46Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hF4Dlw80gGBdP4gSAQdAvJPEY76j2xR5YlG/XHLeUNu9CmJARCPOaHg8q8pxxCEw
-            7oCk+B47XRZu4AT+xrV06jGyLGfkljg6wrZ1PJqBYB0a3iksdTfgVdZeGrlFUmff
-            1GgBCQIQYMoxHB9MRVS0hqs5vYQBxaziH6OpROaeYjXbF1U2NQjpHF9kEmZ6dXM0
-            7a9oHv/ZnO7lo+9Do1vExfz0m8239Pp8DLIciJAs1oViyWcvMNpaQM9zSt8Vv+J3
-            n/yNKjIkOBKADw==
-            =IrAn
+            hF4Dlw80gGBdP4gSAQdAjz1MjkSpU9lZQ2z5PJItaJ7zgW/lMffDGFxPL+138Fsw
+            rt5sY2RIzTVZDyumMn/Qj+FjN88XJsPDmEDYrjjO3/OVG95od2GCx3vzYFfTmnIV
+            1GgBCQIQg1LJ1Pv3vz9KJrQUx+IxRUgi6jWkpp20FgJhiYZ9/vTkpysfPfK0SAU/
+            abtsjzrrM8jrCqkc2Sz5c14T6bJr/qgm8GU3XM30QqFIeOEV+A9IE/VaYGDgGPba
+            7PG+6Lwz129Haw==
+            =EVxP
             -----END PGP MESSAGE-----
           fp: 870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
-    encrypted_regex: ^(secret)$
+    encrypted_regex: secret|password|token|email
     version: 3.10.2
