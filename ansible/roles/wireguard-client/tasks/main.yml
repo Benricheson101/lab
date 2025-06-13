@@ -1,0 +1,31 @@
+- name: Install dependencies
+  dnf:
+    name:
+      - wireguard-tools
+      - iptables
+    state: present
+
+- name: Create wireguard directory
+  file:
+    path: /etc/wireguard
+    state: directory
+
+- name: Create wireguard config file
+  template:
+    src: wg0.conf.j2
+    dest: /etc/wireguard/{{wireguard_if_name}}.conf
+    owner: root
+    group: root
+
+# for some reason it won't run without this
+- name: Start systemd-resolved
+  service:
+    name: systemd-resolved
+    state: started
+    enabled: true
+
+- name: Start wireguad
+  service:
+    name: wg-quick@{{wireguard_if_name}}
+    state: started
+    enabled: true

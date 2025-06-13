@@ -1,6 +1,6 @@
 # TODO
 
-- [ ] Unattended upgrades
+- [x] Unattended upgrades
 - [x] Knot DNS
 - [ ] Knot DNS secondary
 - [x] Knot Resolver
@@ -12,12 +12,13 @@
 - [ ] Plex
 - [x] -arr stack
 - [x] qBittorrent
-- [ ] ProtonVPN
+- [x] ProtonVPN
+- [ ] NAT-PMP for qBittorrent
 - [ ] Immich
 - [ ] Uptime Kuma
 - [ ] Grafana
 - [ ] Prometheus (?)
-- [ ] VPN (tailscale?)
-- [ ] Terraform DNS
+- [x] VPN (tailscale?)
+- [ ] Terraform/Ansible DNS
 - [x] Reverse proxy
 - [ ] GitHub Actions deploy

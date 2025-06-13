@@ -28,7 +28,7 @@ resource "proxmox_virtual_environment_container" "tailscale_ct" {
   }
 
   memory {
-    dedicated = 4 * 1024
+    dedicated = 2 * 1024
     swap      = 0
   }
 

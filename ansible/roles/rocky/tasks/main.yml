@@ -25,8 +25,8 @@
     state: present
 
 # TODO: why does this time out???
-# - name: Enable unattended upgrades
-#   systemd_service:
-#     name: dnf-automatic.timer
-#     state: started
-#     enabled: true
+- name: Enable unattended upgrades
+  systemd_service:
+    name: dnf-automatic.timer
+    state: started
+    enabled: true

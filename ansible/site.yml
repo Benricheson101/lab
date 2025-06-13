@@ -3,7 +3,56 @@
   roles:
     - rocky
 
-- import_playbook: networking.yml
-- import_playbook: db.yml
-- import_playbook: gateway.yml
-- import_playbook: media.yml
+# - name: Configure DNS servers
+#   hosts: dns
+#   roles:
+#     - knot
+#     - knot-resolver
+#
+# - name: Install Tailscale
+#   hosts: tailscale
+#   roles:
+#     - tailscale
+#
+# - name: Configure PostgreSQL
+#   hosts: postgres
+#   become: true
+#   roles:
+#     - postgres
+#
+# - name: Install reverse proxy
+#   hosts: gateway
+#   become: true
+#   roles:
+#     - certbot
+#     - haproxy
+#
+# - name: Install Sonarr
+#   hosts: sonarr
+#   become: true
+#   roles:
+#     - arr
+#
+# - name: Install Radarr
+#   hosts: radarr
+#   become: true
+#   roles:
+#     - arr
+#
+# - name: Install Prowlarr
+#   hosts: prowlarr
+#   become: true
+#   roles:
+#     - arr
+
+- name: Install qBittorrent
+  hosts: qbittorrent
+  become: true
+  roles:
+    - qbittorrent
+    - wireguard-client
+
+# - import_playbook: networking.yml
+# - import_playbook: db.yml
+# - import_playbook: gateway.yml
+# - import_playbook: media.yml

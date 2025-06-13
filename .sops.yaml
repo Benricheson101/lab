@@ -5,7 +5,7 @@ creation_rules:
       870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
 
   - path_regex: .+\.sops.ya?ml
-    encrypted_regex: 'secret|password|token|email|auth_key'
+    encrypted_regex: 'secret|password|token|email|auth_key|wireguard_'
     pgp: >-
       870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
 
