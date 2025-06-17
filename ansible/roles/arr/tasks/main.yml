@@ -19,11 +19,17 @@
     system: true
     state: present
 
+- name: Check if executable exists
+  stat:
+    path: /opt/{{service_name}}/{{service_name | capitalize}}/{{service_name | capitalize}}
+  register: exe_stat
+
 - name: Downlaod {{service_name}} executable
   unarchive:
     src: '{{download_url}}'
     dest: /opt/{{service_name}}
     remote_src: yes
+  when: not exe_stat.stat.exists or not exe_stat.stat.executable
 
 - name: Make {{service_name}} config directory
   file:
