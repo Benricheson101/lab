@@ -35,6 +35,13 @@ variable "media_services" {
       cores = 2
       disk = 16
     }
+    plex = {
+      id = 515
+      ip = "192.168.5.15/22"
+      memory = 8
+      cores = 4
+      disk = 32
+    }
   }
 }
 
