@@ -35,13 +35,13 @@ variable "media_services" {
       cores = 2
       disk = 16
     }
-    plex = {
-      id = 515
-      ip = "192.168.5.15/22"
-      memory = 8
-      cores = 4
-      disk = 32
-    }
+    # plex = {
+    #   id = 515
+    #   ip = "192.168.5.15/22"
+    #   memory = 8
+    #   cores = 4
+    #   disk = 32
+    # }
   }
 }
 
@@ -111,18 +111,6 @@ resource "proxmox_virtual_environment_firewall_rules" "media-inbound" {
 
   rule {
     security_group = proxmox_virtual_environment_cluster_firewall_security_group.basic-rules.name
-  }
-}
-
-resource "proxmox_virtual_environment_firewall_rules" "plex" {
-  vm_id = proxmox_virtual_environment_container.media_ct["plex"].vm_id
-  node_name = proxmox_virtual_environment_container.media_ct["plex"].node_name
-
-  rule {
-    type = "in"
-    action = "ACCEPT"
-    dport = "32400"
-    proto = "tcp"
   }
 }
 
