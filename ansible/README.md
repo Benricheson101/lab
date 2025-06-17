@@ -13,7 +13,7 @@
 - [x] -arr stack
 - [x] qBittorrent
 - [x] ProtonVPN
-- [ ] NAT-PMP for qBittorrent
+- [x] NAT-PMP for qBittorrent
 - [ ] Immich
 - [ ] Uptime Kuma
 - [ ] Grafana

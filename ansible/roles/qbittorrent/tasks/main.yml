@@ -1,7 +1,8 @@
-- name: Install qbittorrent-nox
-  dnf:
-    name: qbittorrent-nox
-    state: present
+- name: Download qbittorrent-nox static binary
+  get_url:
+    url: '{{qbittorrent_download_url}}'
+    dest: /usr/bin/qbittorrent-nox
+    mode: +x
 
 - name: Create qbt group
   group:
@@ -17,8 +18,19 @@
     system: true
     state: present
 
+- name: Create systemd service file
+  template:
+    src: qbittorrent.service.j2
+    dest: /etc/systemd/system/qbittorrent@.service
+  register: qbt_svc
+
+- name: Reload systemd
+  service:
+    daemon_reload: true
+  when: qbt_svc.changed
+
 - name: Start qbittorrent
   service:
-    name: qbittorrent-nox@qbt
+    name: qbittorrent@qbt
     state: started
     enabled: true

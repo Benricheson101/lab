@@ -1,0 +1,54 @@
+- name: Install Development Tools
+  dnf:
+    name: '@Development Tools'
+    state: present
+
+- name: Clone libnatpmp repo
+  git:
+    repo: https://github.com/miniupnp/libnatpmp.git
+    dest: /tmp/libnatpmp
+    clone: true
+    update: false
+  register: gc
+
+- name: Build
+  command:
+    cmd: make all
+    chdir: /tmp/libnatpmp
+  when: gc.changed
+
+- name: Install
+  command:
+    cmd: make install
+    chdir: /tmp/libnatpmp
+  args:
+    creates: /usr/bin/natpmpc
+
+- name: Copy port forwarding script
+  copy:
+    src: qbt_port_updater.sh
+    dest: /usr/bin/qbt_port_updater.sh
+
+- name: Make port forwarding script executable
+  file:
+    path: /usr/bin/qbt_port_updater.sh
+    mode: +x
+
+- name: Copy service file
+  template:
+    src: qbt_port_updater.service.j2
+    dest: /etc/systemd/system/qbt_port_updater.service
+    owner: root
+    group: root
+  register: svc_unit
+
+- name: Reload systemd
+  service:
+    daemon_reload: true
+  when: svc_unit.changed
+
+- name: Start qbt port updater
+  service:
+    name: qbt_port_updater
+    state: started
+    enabled: true

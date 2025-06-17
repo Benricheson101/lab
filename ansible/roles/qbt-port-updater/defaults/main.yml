@@ -1,0 +1,4 @@
+qbt_port_updater_username: admin
+qbt_port_updater_password: adminadmin
+qbt_port_updater_url: http://localhost:8080
+qbt_port_updater_protonvpn_ip: 10.2.0.1

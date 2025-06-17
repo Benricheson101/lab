@@ -51,6 +51,7 @@
   roles:
     - qbittorrent
     - wireguard-client
+    - qbt-port-updater
 
 - name: Install Plex
   hosts: plex

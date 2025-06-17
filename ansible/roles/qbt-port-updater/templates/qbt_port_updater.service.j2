@@ -1,0 +1,17 @@
+[Unit]
+Description=Set the qBittorrent port to a port from natpmp
+After=syslog.target network.target qbittorrent-nox@.service
+
+[Service]
+ExecStart=/usr/bin/qbt_port_updater.sh
+TimeoutStopSec=20
+KillMode=process
+Restart=on-failure
+
+Environment="QBT_USERNAME={{qbt_port_updater_username}}"
+Environment="QBT_PASSWORD={{qbt_port_updater_password}}"
+Environment="QBT_URL={{qbt_port_updater_url}}"
+Environment="PROTONVPN_IP={{qbt_port_updater_protonvpn_ip}}"
+
+[Install]
+WantedBy=multi-user.target
