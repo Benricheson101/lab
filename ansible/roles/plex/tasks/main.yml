@@ -1,0 +1,25 @@
+- name: Add Plex repo
+  yum_repository:
+    name: PlexRepo
+    description: plex.tv repo
+    baseurl: https://downloads.plex.tv/repo/rpm/$basearch/
+    enabled: true
+    gpgkey: https://downloads.plex.tv/plex-keys/PlexSign.key
+    # TODO: turn this back on maybe. sha1 signatures are deprecated in RHEL9 soooo
+    gpgcheck: false
+
+# - name: Add Plex gpg key
+#   rpm_key:
+#     key: https://downloads.plex.tv/plex-keys/PlexSign.key
+#     state: present
+
+- name: Install Plex
+  dnf:
+    name: plexmediaserver
+    state: present
+
+- name: Start Plex
+  service:
+    name: plexmediaserver
+    state: started
+    enabled: true
