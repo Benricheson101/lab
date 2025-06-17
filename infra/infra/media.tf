@@ -114,6 +114,18 @@ resource "proxmox_virtual_environment_firewall_rules" "media-inbound" {
   }
 }
 
+resource "proxmox_virtual_environment_firewall_rules" "plex" {
+  vm_id = proxmox_virtual_environment_container.media_ct["plex"].vm_id
+  node_name = proxmox_virtual_environment_container.media_ct["plex"].node_name
+
+  rule {
+    type = "in"
+    action = "ACCEPT"
+    dport = "32400"
+    proto = "tcp"
+  }
+}
+
 resource "ansible_host" "media_ct" {
   for_each = proxmox_virtual_environment_container.media_ct
 

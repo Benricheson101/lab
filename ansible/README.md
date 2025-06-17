@@ -9,7 +9,7 @@
 - [ ] MySQL
 - [ ] Database replication
 - [ ] Backups
-- [ ] Plex
+- [x] Plex
 - [x] -arr stack
 - [x] qBittorrent
 - [x] ProtonVPN

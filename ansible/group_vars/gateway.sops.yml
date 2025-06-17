@@ -1,6 +1,6 @@
-letsencrypt_email: ENC[AES256_GCM,data:aNB1gNKXM7yebO1nJPE=,iv:ePHqsMpAAZ7QVtEYCReAkaIeFXYUWsBqhGrgovg9hHM=,tag:H2cbqBAp59Xf8fR1l5TO3A==,type:str]
+letsencrypt_email: ENC[AES256_GCM,data:9V54kLvSICBh7dJYt+c=,iv:fWsfUDs4taN2cUsc+/TkycYaQ8/VnbBxfGqPcwqt/8Q=,tag:x4HwEdCDGyJP95CW3J4x8Q==,type:str]
 reload_haproxy: true
-certbot_cloudflare_api_token: ENC[AES256_GCM,data:xK/i/YKL/sp5CaWoiS4IE1hOT3Sy59aJzElXMSpu4NLGUbSTNFXyoA==,iv:kuW6q3xZA/SKuzX3NCsLR9f6mFTkQrALEJqybKOqdKE=,tag:yEwb07+EJTNjfR3I1xok+Q==,type:str]
+certbot_cloudflare_api_token: ENC[AES256_GCM,data:XeO0zLSx+Trt/X8oWvJYklr5HgkRRvOi2Rdd13mTQpmE+yspEMeZQg==,iv:GKtW9SF+o15NiHWeMAUQu4NrAZkXmufQNVS9dR6zfCI=,tag:lkiILzk1aK/gmkYTOKk5Vw==,type:str]
 certificates:
     - name: pupy.cloud
       domains:
@@ -29,21 +29,25 @@ reverse_proxy:
           domain: qbittorrent-iac.pupy.cloud
           backend_group: qbittorrent
           backend_port: 8080
+        - name: plex
+          domain: plex-iac.pupy.cloud
+          backend_group: plex
+          backend_port: 32400
 sops:
-    lastmodified: "2025-06-09T22:09:54Z"
-    mac: ENC[AES256_GCM,data:7PskryvUCacreO0Hu2oVjp/Av648/p4DaoPuczv4bJxaWURCV8zLTi3DZ2OkATEzFI54uZ/4iX0rNZIX6Fnj868PitKN1vp3+1gkJ6qauET8ex4I0AqcxXWaX/E9+1Tytj3aCWK7XjlW0zBLENtGcKbdiF797jfKM49Zvu8DLiA=,iv:8dupB0eIksgJqJDNHpPqv1pZOn18619X5zdELDCnLXY=,tag:DEbLB7Mwev2bxBEiQkcL/g==,type:str]
+    lastmodified: "2025-06-17T19:34:23Z"
+    mac: ENC[AES256_GCM,data:YV3xoasZ+GmjjrwYcXZi6t9lXicexIt3v428B5fDJoSX0ht0fG0cR/kwE1nezauSJkCD7gQZHdDwqzueQ+8GnPaLsYkbNeVDkR919+k7PEauhqVrLDEJl8Q19RpVJziV/eBwwxWWpTcnY0rD4rIV1mVwLQ/Hh7VfkpMAyFskaxg=,iv:5hB+urC8tNakKdSwM94FLpw48sxE+90d3nn7yXYxU8M=,tag:Od46qjPBpJ0bDyi4mACuSg==,type:str]
     pgp:
-        - created_at: "2025-06-09T22:09:54Z"
+        - created_at: "2025-06-17T19:34:23Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hF4Dlw80gGBdP4gSAQdASbqaFrPeKGPsXcAXVJD3Qu0pjaTkPoV09ncsTh3wJ34w
-            n7+JVZ/1XDD/2RLictRFyhZxRx3CUOqYgAIR6VxdbwULja+XUPhNoHP3ma4qa5TX
-            1GgBCQIQ+Ek6lhP1+gzz6rAOHv9fmcx44BllYgSvURnlnDOAPc4gSgnp6Lu/sH3B
-            +chjcBv0gySIxBb6BPyqSpmWLoYtLM09G8uTCGBHF8WpG1aabyoqNhjpCOK8xmSN
-            xJDlEKCg/lyMMg==
-            =9Ccg
+            hF4Dlw80gGBdP4gSAQdAtmcbLtTtwe7a67xht1F93hpsPPjbZI3ezzi8YC0RGSow
+            khgRBMLV0VvmiffWdn9x1vBWL++1Mr225PYUu2WQbAd1rpDP6hcOs8uZkkZRd+o3
+            1GgBCQIQT85Z2zQuWnS3xuliN+4cYcpFpwbGYJYe50S6TGZGle5YgVmzOTaiJrWY
+            ggWGtn7Uj7fNrHM1GXKu8Qia5PmoqL5zSsoaX5+PLt2rOnwPdHwnPuR23Fz/BpDb
+            rFgWaTVfsUf0Mg==
+            =RiXH
             -----END PGP MESSAGE-----
           fp: 870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
-    encrypted_regex: secret|password|token|email
+    encrypted_regex: secret|password|token|email|auth_key|wireguard_
     version: 3.10.2
