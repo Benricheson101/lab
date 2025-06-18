@@ -11,6 +11,7 @@
 - [ ] Backups
 - [x] Plex
 - [x] -arr stack
+- [ ] Overseerr
 - [x] qBittorrent
 - [x] ProtonVPN
 - [x] NAT-PMP for qBittorrent
@@ -22,3 +23,4 @@
 - [ ] Terraform/Ansible DNS
 - [x] Reverse proxy
 - [ ] GitHub Actions deploy
+- [ ] NAS NFS

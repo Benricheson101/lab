@@ -20,7 +20,6 @@
   failed_when: ts_status.rc != 0 and ts_status.rc != 1
   register: ts_status
 
-
 - name: Start tailscale
   command: |
     tailscale up \
