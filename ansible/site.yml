@@ -3,11 +3,16 @@
   roles:
     - rocky
 
-- name: Configure DNS servers
+- name: Configure Knot DNS servers
   hosts: dns
   roles:
     - knot
     - knot-resolver
+
+- name: Install AdGuard Home
+  hosts: adguard
+  roles:
+    - adguard-home
 
 - name: Install Tailscale
   hosts: tailscale

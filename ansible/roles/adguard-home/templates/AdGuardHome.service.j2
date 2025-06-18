@@ -1,0 +1,12 @@
+[Unit]
+Description=AdGuardHome DNS ad blocker
+Wants=network-online.target
+
+[Service]
+Type=simple
+PrivateTmp=false
+ExecStart=/opt/AdGuardHome/AdGuardHome
+TimeoutStopSec=20
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,38 @@
+- name: Create AdGuardHome directory
+  file:
+    path: /opt/AdGuardHome
+    mode: 0700
+    state: directory
+
+- name: Download and extract AdGuardHome
+  unarchive:
+    src: '{{adguard_home_download_url}}'
+    remote_src: true
+    include: [./AdGuardHome/AdGuardHome]
+    dest: /tmp
+
+- name: Move AdGuardHome binary to PATH
+  copy:
+    src: /tmp/AdGuardHome/AdGuardHome
+    dest: /opt/AdGuardHome/AdGuardHome
+    remote_src: true
+    mode: +x
+
+- name: Create systemd service file
+  template:
+    src: AdGuardHome.service.j2
+    dest: /etc/systemd/system/AdGuardHome.service
+  register: agh_svc
+
+- name: Reload systemd
+  service:
+    daemon_reload: true
+  when: agh_svc.changed
+
+# TODO: configure AdGuardHome.yaml?
+
+- name: Start AdGuardHome
+  service:
+    name: AdGuardHome
+    state: started
+    enabled: true
