@@ -58,3 +58,24 @@
   include_tasks: init_zones.yml
   vars:
     zone: '{{item}}'
+
+- name: Install dnspython
+  pip:
+    name: dnspython
+    state: present
+
+- name: Create static DNS records
+  loop: '{{knot.dns_records}}'
+  nsupdate:
+    key_name: '{{item.key_name | d(knot.key[0].id)}}'
+    key_secret: "{{(knot.key | selectattr('id', '==', item.key_name | d(knot.key[0].id))) | map(attribute='secret') | first}}"
+    key_algorithm: "{{(knot.key | selectattr('id', '==', item.key_name | d(knot.key[0].id))) | map(attribute='algorithm') | first}}"
+    server: '{{item.server | d(knot.interfaces[0].ip)}}'
+    port: '{{item.port | d(knot.interfaces[0].port) | d(53)}}' # default to 53?
+    zone: '{{item.zone}}'
+    record: '{{item.record}}'
+    value: '{{groups[item.group] if item.group is defined else item.value}}'
+    type: '{{item.type}}'
+    state: present
+
+# TODO: create records from reverse_proxy in gateway group_vars/ ?

@@ -20,7 +20,7 @@
 - [ ] Grafana
 - [ ] Prometheus (?)
 - [x] VPN (tailscale?)
-- [ ] Terraform/Ansible DNS
+- [x] Ansible DNS
 - [x] Reverse proxy
 - [ ] GitHub Actions deploy
 - [ ] NAS NFS
