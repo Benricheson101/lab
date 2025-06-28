@@ -28,13 +28,13 @@ variable "media_services" {
       cores = 2
       disk = 16
     }
-    testing = {
-      id = 514
-      ip = "192.168.5.14/22"
-      memory = 2
-      cores = 2
-      disk = 16
-    }
+    # testing = {
+    #   id = 514
+    #   ip = "192.168.5.14/22"
+    #   memory = 2
+    #   cores = 2
+    #   disk = 16
+    # }
     # plex = {
     #   id = 515
     #   ip = "192.168.5.15/22"

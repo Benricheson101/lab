@@ -27,11 +27,13 @@ provider "proxmox" {
   }
 }
 
-module "infra" {
-  source     = "./infra"
-  ssh_keys   = var.ssh_keys
-  pve_node   = var.pve_node
-  cipassword = var.cipassword
-  gateway    = var.gateway
-  lan        = var.lan
+locals {
+  vms = {
+    for s in flatten([
+      proxmox_virtual_environment_container.postgres_ct,
+      proxmox_virtual_environment_container.dns_ct,
+      proxmox_virtual_environment_container.gateway_ct,
+      values(proxmox_virtual_environment_container.media_ct),
+    ]) : s.vm_id => { vm_id = s.vm_id, node_name = s.node_name }
+  }
 }

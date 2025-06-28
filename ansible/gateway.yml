@@ -1,5 +1,0 @@
-- hosts: gateway
-  become: true
-  roles:
-    - certbot
-    - haproxy

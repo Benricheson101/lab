@@ -1,19 +1,19 @@
-tailscale_auth_key: ENC[AES256_GCM,data:8hy0Tm8QkK7q/zg3yqrok0j7axA12xgN96vee5HoZ1SHHABX//FqrMy/slzVR/ds7JZPJtEXCJjJmpsdppQ=,iv:AxznwlOqDqURFciRdicmfx0qBcRbzgJ/wSPHUwpx8tk=,tag:9ojY5IZ7AyJ+ncAJc2OEgA==,type:str]
+tailscale_auth_key: ENC[AES256_GCM,data:v/BsXXxGure8yy1uvchw3jgD1N8n7VRFpqUTwLusb1676fdkWAPnIO6IDsAQsJlKX/1F1wJG4ddrbhYshQ==,iv:+YrUJSGgRzhO4hGB5IlU1zsEE4yKIyxlRoYbzPDMWJg=,tag:ubG/5MfLq+16tcUJpYdYLA==,type:str]
 sops:
-    lastmodified: "2025-06-11T22:41:47Z"
-    mac: ENC[AES256_GCM,data:/tZHVmTubigHKO3QpGkiBOEw2Ebx3xuZESWec3dlJbYoorBuAyyNtg3HgX9XxS3O+yJ27/n6wxbPd5ypLVwGoruvPAsfWCNqbjbtGbVHzSlC+WZzjAMoC35zlP0IzZCrpDUpiEX7J31v+m6HFEUvIZ6ueil1twXpPPVseHRdKiY=,iv:YpLYdv8xsgLqxsFex0jldLeuFnMJM4nv+py+yLlsxG4=,tag:vZnyiRn3Nv1aHkiBzhnODg==,type:str]
-    pgp:
-        - created_at: "2025-06-11T22:41:47Z"
-          enc: |-
-            -----BEGIN PGP MESSAGE-----
+  lastmodified: "2025-06-21T20:58:56Z"
+  mac: ENC[AES256_GCM,data:axB5ZszXTmnkzdB9CFoGRWaj4E84Ww1kyqRiZffZnsiXJqk9BL+0qv1yaAsO1N+ysh7Cx9nFTH2/h2706l6vunjf/mgojITjb4pOTbRMni3R73hVbi/yBJrkk6g4XGj0JHuNbXqoDjqbpZsq5On92VPXdbF3IezH6Shbpxw9cvY=,iv:lEXa8RbXvqvM8TUZLHISaj9QObPYQcvEZ3n34mx+b0E=,tag:fc4rJ7BVNrMPaFDNr/KNwg==,type:str]
+  pgp:
+    - created_at: "2025-06-21T20:58:56Z"
+      enc: |-
+        -----BEGIN PGP MESSAGE-----
 
-            hF4Dlw80gGBdP4gSAQdAGCpJzlEdYsIH460NrkI8nC2Mw6gSoLu1uFqarL4xvhsw
-            Nudvh7KMngg10qAAwKXUNKjzZ/v+sRowkbWJgn1/1SfN6qrKc0Hfho93LJblKHO7
-            1GYBCQIQYPqsJ6XE6Sl1VWAlTpXgpfWxMN7ZGn40RAZ6zv6+QQhZojw2nrZ448Wd
-            6pdB6DVYwl7oHtf9vzC6QX0udYdACCcVUNspP1q9yryof8TKHgkgP5zfU2SKlNFk
-            De4sJGM1MhY=
-            =sT97
-            -----END PGP MESSAGE-----
-          fp: 870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
-    encrypted_regex: secret|password|token|email|auth_key
-    version: 3.10.2
+        hF4Dlw80gGBdP4gSAQdARczdI5dJU2rEvLMvwhbHLZLlM3e787vUR6sjCkwvnicw
+        RTTUdfGs615tE14BZnl6LXV69cmT5CexPdbqv/Bs3GPazphLmCO0nFQKOycly1uA
+        1GYBCQIQE9qIaOwb1qsJ/0eN9y0ncJbUBTwbKgzoDTRUSHeumqPILqlXlOpp67H+
+        CttUq4iQdMG0R3tE8qHEsNOjpmnmFsHu1+XJmztrXQFs8w62S7aI4riaF/0e7ctC
+        CkV2xnzZCD8=
+        =4GYM
+        -----END PGP MESSAGE-----
+      fp: 870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
+  encrypted_regex: secret|password|token|email|auth_key|wireguard_
+  version: 3.10.2

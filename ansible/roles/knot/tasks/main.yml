@@ -52,6 +52,10 @@
         path: '{{knot_conf.backup_file}}'
         state: absent
       when: knot_conf is changed
+#
+# - name: Reload knot
+#   shell: knotc reload
+#   when: create_zone.changed
 
 - name: Provision zones
   loop: '{{knot.zones}}'
@@ -60,22 +64,28 @@
     zone: '{{item}}'
 
 - name: Install dnspython
+  register: init_zones
   pip:
     name: dnspython
     state: present
 
-- name: Create static DNS records
+# Why does nsupdate not work until after it restarts?
+- name: Restart knot
+  when: init_zones.changed
+  service:
+    name: knot
+    state: restarted
+
+- name: Create DNS records
   loop: '{{knot.dns_records}}'
   nsupdate:
     key_name: '{{item.key_name | d(knot.key[0].id)}}'
     key_secret: "{{(knot.key | selectattr('id', '==', item.key_name | d(knot.key[0].id))) | map(attribute='secret') | first}}"
     key_algorithm: "{{(knot.key | selectattr('id', '==', item.key_name | d(knot.key[0].id))) | map(attribute='algorithm') | first}}"
-    server: '{{item.server | d(knot.interfaces[0].ip)}}'
+    server: "{{item.server | d('127.0.0.1')}}"
     port: '{{item.port | d(knot.interfaces[0].port) | d(53)}}' # default to 53?
     zone: '{{item.zone}}'
     record: '{{item.record}}'
     value: '{{groups[item.group] if item.group is defined else item.value}}'
     type: '{{item.type}}'
     state: present
-
-# TODO: create records from reverse_proxy in gateway group_vars/ ?

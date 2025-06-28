@@ -22,9 +22,9 @@ terraform init
 echo '=> Creating PostgreSQL container'
 
 terraform apply \
-  -target module.infra.proxmox_virtual_environment_container.postgres_ct \
-  -target module.infra.proxmox_virtual_environment_firewall_rules.postgres-inbound \
-  -target module.infra.ansible_host.postgres_ct
+  -target proxmox_virtual_environment_container.postgres_ct \
+  -target proxmox_virtual_environment_firewall_rules.postgres-inbound \
+  -target ansible_host.postgres_ct
 
 popd
 
@@ -32,7 +32,7 @@ pushd ansible
 
 echo '=> Running Ansible playbook'
 
-ansible-playbook site.yml
+ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook site.yml
 
 popd
 

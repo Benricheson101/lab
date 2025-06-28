@@ -28,7 +28,7 @@ knot:
   key:
     - id: admin
       algorithm: hmac-sha256
-      secret: ENC[AES256_GCM,data:CmSr6IIxEakvepm5KdzYNZl+aNOkof7xehcqThlJqxd+0KFwEjsWnje3Vcg=,iv:QCQpSf6XfemM9OkoL1gsxb8/2kSxoWxHNngh81dFByg=,tag:XxbetEfoh5x28aDpn/2L2Q==,type:str]
+      secret: ENC[AES256_GCM,data:3JMeNe9UCvoZqro8MqNRcwgyjWIGY3XEXwg8Ow4HAXZx82I0TIecdLO5kf4=,iv:u/rxAxH9mEJEiFicJLoc6xTgh2ffeslGAEfb5+mJZQw=,tag:LJ06q5hGdPEC0GKzAQrXtg==,type:str]
   queryacl_address:
     - 192.168.8.0/24
     - 127.0.0.1
@@ -37,33 +37,39 @@ knot:
     - type: A
       zone: pupy.cloud
       record: sonarr-iac
-      group: sonarr
+      group: gateway
+      # server: 0.0.0.0
+      # port: 5301
     - type: A
       zone: pupy.cloud
       record: radarr-iac
-      group: radarr
+      group: gateway
     - type: A
       zone: pupy.cloud
       record: prowlarr-iac
-      group: prowlarr
+      group: gateway
     - type: A
       zone: pupy.cloud
       record: plex-iac
-      group: plex
+      group: gateway
+    - type: A
+      zone: pupy.cloud
+      record: adguard-iac
+      group: gateway
 sops:
-  lastmodified: "2025-06-21T20:37:18Z"
-  mac: ENC[AES256_GCM,data:t9Kiq3PkPxnjWOUtnAc2mqZVu/dvGtUpZ4kpRQyx2gmzYkil0r4ktjXZULnyTd8gpkKJHiUxV819EnkrFAAAYva/jqyyl2VfNiymAOyp7M8QRYQCj+UXFk2vTlUBgPfH3GBGXMr/cN7aezTJ0KH/bIKAGIP1aHS0X1h3xl3C13c=,iv:CPdkxCHNg7eTIz9GFXQEnkcHPr+BjXLkvztxwKXwyT0=,tag:jR6oqxRyfBjnieH6DLz7Ew==,type:str]
+  lastmodified: "2025-06-26T23:29:37Z"
+  mac: ENC[AES256_GCM,data:Zxi5Vbq8YhK898idC9tdSDHcIjo7hEt0WozpI7YLT++TjZe4ql49q+s6Hl4F4mTbLkS1besCu25beLxFHNrRvvSLCpzvMCUM0fCcueamgzhK+UdWzSd5zONEdOHUqzijNAt3a6RzA/08YcEyw8V8B2hrZ719Zsn+gHNzImZOK6c=,iv:y0zjZttkx1jqVc6yBEQtS/6/D6Vi0CtlbcVDYk5gidw=,tag:SDK3gtVsasDFWl3DUh6Gbw==,type:str]
   pgp:
-    - created_at: "2025-06-21T20:37:18Z"
+    - created_at: "2025-06-26T23:29:37Z"
       enc: |-
         -----BEGIN PGP MESSAGE-----
 
-        hF4Dlw80gGBdP4gSAQdAYXGHlRz12Y7u4hugt0h+1GqF4/O+qZFukcSCsDygOmYw
-        +fF7BYAYdZEvRcA+ggZl+ARi3Jr2nOdXeVwE74SWaMZ+zyDPOiIM1o2N99lRBJ1r
-        1GYBCQIQPMEnu3ZnMl6ZOaER2n0p6pYHYgJaNby4yE6bAlasCGYaQTfgfO4DTvJq
-        0p8GP8efHZAxtSmWJNLuERL3CoxQYoFJRgUyeMlVAVHJbkZtCIq+IY7O900wTPmF
-        ZswCsXakyjY=
-        =ioAO
+        hF4Dlw80gGBdP4gSAQdATEC4Kv/XhZimwE+vGtSRUJ0B12N1ZHkH5RqUiTmjXX8w
+        4XLOUDmjXPNonBA8xQTWxRzMe8RQU5bs296vdnDuuWC2BTgrQ2tIe+BbAP44/Yf4
+        1GgBCQIQCUe9oRemSIJP2OGgPnH1ASFhVrfkwuWcpfC4/hAprOficDdBAk9hjELD
+        aZx8WaKEjwgCM/afw0aVGYLtbOxBP31fvxlF/PelBPiMmNaChcMyHMdUFOC5fjjP
+        rRdO52NH8wCXgQ==
+        =J5aa
         -----END PGP MESSAGE-----
       fp: 870F7C2D9D9AE8E302DAFF821B90D025DC9A8E35
   encrypted_regex: secret|password|token|email|auth_key|wireguard_

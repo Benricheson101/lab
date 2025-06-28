@@ -6,7 +6,7 @@ cd "$(dirname "$0")"
 pushd infra
 
 export $(sops -d --output-type dotenv .env | xargs)
-terraform apply -target module.infra
+terraform apply
 
 popd
 pushd ansible
